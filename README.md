@@ -90,7 +90,7 @@ Where:
 - [OpenAI Case Study on Basis](https://openai.com/index/basis/)
 - [Future Finance Podcast - Mitchell Troyanovsky](https://blog.qflow.ai/post/future-finance-podcast-mitchell-troyanovsky/)
 
-See [RESEARCH.md](./RESEARCH.md) for full research notes and methodology.
+*Full research notes available upon request.*
 
 ---
 
