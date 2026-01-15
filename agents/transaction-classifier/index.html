@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Classifier Agent | Basis Demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Oxygen:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --basis-teal: #41666F;
+            --basis-teal-light: #5a8a95;
+            --basis-teal-dark: #254951;
+            --bg-primary: #121518;
+            --bg-secondary: #1a1d21;
+            --bg-tertiary: #22262b;
+            --text-primary: #e8eaed;
+            --text-secondary: #9aa0a6;
+            --text-muted: #6b7280;
+            --border-color: #2d3238;
+            --success: #4ade80;
+            --warning: #fbbf24;
+            --info: #60a5fa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Oxygen', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.5rem 2rem;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .header h1 span {
+            color: var(--basis-teal-light);
+        }
+
+        .back-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--basis-teal-light);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .intro {
+            margin-bottom: 2rem;
+        }
+
+        .intro h2 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .intro p {
+            color: var(--text-secondary);
+            max-width: 700px;
+        }
+
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 1024px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Panels */
+        .panel {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .panel-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--basis-teal-light);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Upload Area */
+        .upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 1.5rem;
+        }
+
+        .upload-area:hover,
+        .upload-area.dragover {
+            border-color: var(--basis-teal-light);
+            background: rgba(90, 138, 149, 0.1);
+        }
+
+        .upload-area svg {
+            width: 48px;
+            height: 48px;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .upload-area p {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-area span {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        #file-input {
+            display: none;
+        }
+
+        /* Sample Data Buttons */
+        .sample-data {
+            margin-top: 1rem;
+        }
+
+        .sample-data p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .sample-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .btn:hover {
+            border-color: var(--basis-teal-light);
+            background: var(--bg-secondary);
+        }
+
+        .btn-primary {
+            background: var(--basis-teal);
+            border-color: var(--basis-teal);
+        }
+
+        .btn-primary:hover {
+            background: var(--basis-teal-light);
+            border-color: var(--basis-teal-light);
+        }
+
+        .btn small {
+            display: block;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-top: 0.25rem;
+        }
+
+        /* OpenAI Config */
+        .config-section {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .config-section label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .config-section input {
+            width: 100%;
+            padding: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+        }
+
+        .config-section input:focus {
+            outline: none;
+            border-color: var(--basis-teal-light);
+        }
+
+        .config-section .hint {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        /* Results Panel */
+        .results-panel {
+            min-height: 500px;
+        }
+
+        .results-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 400px;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        .results-empty svg {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            background: var(--bg-tertiary);
+            padding: 1rem 1.5rem;
+            border-radius: 6px;
+            min-width: 140px;
+        }
+
+        .stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .stat-value.success { color: var(--success); }
+        .stat-value.warning { color: var(--warning); }
+        .stat-value.info { color: var(--info); }
+
+        /* Results Table */
+        .results-table-container {
+            overflow-x: auto;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .results-table th {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            background: var(--bg-tertiary);
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+        }
+
+        .results-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: top;
+        }
+
+        .results-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .results-table tr:hover {
+            background: rgba(90, 138, 149, 0.05);
+        }
+
+        .description-cell {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .amount-cell {
+            font-family: 'JetBrains Mono', monospace;
+            text-align: right;
+        }
+
+        .amount-positive { color: var(--success); }
+        .amount-negative { color: var(--text-primary); }
+
+        .category-cell {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .category-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+        }
+
+        .confidence-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .confidence-high { background: var(--success); }
+        .confidence-medium { background: var(--warning); }
+        .confidence-low { background: #ef4444; }
+
+        .method-badge {
+            font-size: 0.65rem;
+            padding: 0.15rem 0.4rem;
+            border-radius: 3px;
+            background: var(--bg-primary);
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .method-badge.llm {
+            background: rgba(96, 165, 250, 0.2);
+            color: var(--info);
+        }
+
+        /* Export Button */
+        .export-section {
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 3rem;
+            padding: 1.5rem 2rem;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .footer a {
+            color: var(--basis-teal-light);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Loading State */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 2rem;
+            color: var(--text-secondary);
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-color);
+            border-top-color: var(--basis-teal-light);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1><span>//</span> Transaction Classifier Agent</h1>
+            <a href="../../index.html" class="back-link">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Back to Target Map
+            </a>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="intro">
+            <h2>Automatic Transaction Classification</h2>
+            <p>Upload a CSV of bank transactions and this agent will automatically categorize each one into the appropriate accounting category. Uses rule-based matching for common patterns, with optional LLM fallback for ambiguous transactions.</p>
+        </div>
+
+        <div class="grid">
+            <!-- Left Panel: Upload & Config -->
+            <div class="left-column">
+                <div class="panel">
+                    <div class="panel-title">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="17 8 12 3 7 8"/>
+                            <line x1="12" y1="3" x2="12" y2="15"/>
+                        </svg>
+                        Upload Transactions
+                    </div>
+
+                    <div class="upload-area" id="upload-area">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        <p>Drag & drop your CSV file here</p>
+                        <span>or click to browse</span>
+                        <input type="file" id="file-input" accept=".csv">
+                    </div>
+
+                    <div class="sample-data">
+                        <p>Or try with sample data:</p>
+                        <div class="sample-buttons">
+                            <button class="btn" id="load-small-business">
+                                Small Business Transactions
+                                <small>50 transactions: revenue, payroll, software, travel</small>
+                            </button>
+                            <button class="btn" id="load-accounting-firm">
+                                Accounting Firm Transactions
+                                <small>50 transactions: client fees, CPE, tax software</small>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="config-section">
+                        <label for="openai-key">OpenAI API Key (optional)</label>
+                        <input type="password" id="openai-key" placeholder="sk-...">
+                        <p class="hint">For ambiguous transactions, the agent can use GPT to classify. Leave empty to use rule-based only.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Results -->
+            <div class="results-panel panel">
+                <div class="panel-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                    </svg>
+                    Classification Results
+                </div>
+
+                <div id="results-container">
+                    <div class="results-empty">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        <p>Upload a CSV file to see classifications</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>Transaction Classifier Agent | Part of the <a href="../../index.html">Basis Target Intelligence Map</a> project</p>
+        <p style="margin-top: 0.5rem;">Built as a demonstration of AI-powered accounting automation</p>
+    </footer>
+
+    <script>
+        // ===========================================
+        // CLASSIFICATION RULES ENGINE
+        // ===========================================
+
+        const CLASSIFICATION_RULES = {
+            // Revenue categories
+            'Revenue': {
+                keywords: ['STRIPE TRANSFER', 'STRIPE PAYOUT', 'SQUARE TRANSFER', 'PAYPAL TRANSFER',
+                          'CHECK DEP', 'WIRE TRANSFER IN', 'CLIENT PMT', 'CLIENT RETAINER',
+                          'INVOICE', 'CONSULTING FEE', 'ADVISORY FEE', 'CLIO PAYMENTS'],
+                amountDirection: 'positive'
+            },
+
+            // Payroll
+            'Payroll': {
+                keywords: ['GUSTO', 'ADP PAYROLL', 'PAYCHEX', 'PAYROLL'],
+                excludeKeywords: ['TAX'],
+                amountDirection: 'negative'
+            },
+            'Payroll Tax': {
+                keywords: ['PAYROLL TAX', 'TAX DEPOSIT', 'GUSTO PAYROLL TAX', 'ADP PAYROLL TAX'],
+                amountDirection: 'negative'
+            },
+
+            // Software & Subscriptions
+            'Software - Productivity': {
+                keywords: ['GOOGLE *WORKSPACE', 'MICROSOFT 365', 'SLACK', 'ZOOM', 'NOTION',
+                          'CALENDLY', 'ASANA', 'TRELLO', 'FIGMA', 'CANVA', 'ADOBE'],
+                amountDirection: 'negative'
+            },
+            'Software - Accounting': {
+                keywords: ['QUICKBOOKS', 'XERO', 'FRESHBOOKS', 'WAVE', 'SAGE',
+                          'THOMSON REUTERS', 'CCH', 'LACERTE', 'PROCONNECT', 'INTUIT',
+                          'DEXT', 'RECEIPT BANK', 'KARBON', 'PRACTICE CS', 'SAFESEND', 'SHAREFILE'],
+                amountDirection: 'negative'
+            },
+            'Software - Development': {
+                keywords: ['GITHUB', 'GITLAB', 'AWS', 'HEROKU', 'DIGITALOCEAN', 'AZURE'],
+                amountDirection: 'negative'
+            },
+            'Software - Marketing': {
+                keywords: ['HUBSPOT', 'MAILCHIMP', 'LINKEDIN PREMIUM', 'HOOTSUITE', 'BUFFER'],
+                amountDirection: 'negative'
+            },
+
+            // Travel & Entertainment
+            'Travel - Transportation': {
+                keywords: ['UBER TRIP', 'LYFT', 'DELTA AIR', 'UNITED AIR', 'AMERICAN AIR',
+                          'SOUTHWEST', 'JETBLUE', 'AMTRAK', 'ENTERPRISE RENT'],
+                amountDirection: 'negative'
+            },
+            'Travel - Lodging': {
+                keywords: ['MARRIOTT', 'HILTON', 'HYATT', 'IHG', 'AIRBNB', 'HOTEL', 'VRBO'],
+                amountDirection: 'negative'
+            },
+            'Meals': {
+                keywords: ['UBER EATS', 'DOORDASH', 'GRUBHUB', 'POSTMATES', 'STARBUCKS',
+                          'RESTAURANT', 'CAFE', 'DINER'],
+                amountDirection: 'negative'
+            },
+
+            // Office & Operations
+            'Office Supplies': {
+                keywords: ['STAPLES', 'OFFICE DEPOT', 'OFFICEMAX', 'AMAZON', 'AMZN MKTP'],
+                amountDirection: 'negative'
+            },
+            'Shipping': {
+                keywords: ['FEDEX', 'UPS', 'USPS', 'DHL'],
+                amountDirection: 'negative'
+            },
+
+            // Facilities
+            'Rent': {
+                keywords: ['RENT', 'BUILDING RENT', 'OFFICE RENT', 'LEASE'],
+                amountDirection: 'negative'
+            },
+            'Utilities': {
+                keywords: ['PG&E', 'ELECTRIC', 'GAS', 'WATER', 'COMCAST', 'VERIZON',
+                          'AT&T', 'T-MOBILE', 'SPECTRUM', 'INTERNET'],
+                amountDirection: 'negative'
+            },
+
+            // Insurance
+            'Insurance': {
+                keywords: ['STATE FARM', 'GEICO', 'ALLSTATE', 'INSURANCE', 'CAMICO', 'E&O'],
+                amountDirection: 'negative'
+            },
+
+            // Professional Development (especially for accounting firms)
+            'Professional Development': {
+                keywords: ['CPE', 'BECKER', 'AICPA', 'CPA SOCIETY', 'WEBINAR', 'CONFERENCE',
+                          'SEMINAR', 'TRAINING', 'MEMBERSHIP DUES'],
+                amountDirection: 'negative'
+            },
+
+            // Banking
+            'Bank Fees': {
+                keywords: ['SERVICE FEE', 'BANK FEE', 'ANALYSIS FEE', 'WIRE FEE', 'MAINTENANCE FEE'],
+                amountDirection: 'negative'
+            },
+            'Interest Income': {
+                keywords: ['INTEREST EARNED', 'INTEREST INCOME', 'INT EARNED'],
+                amountDirection: 'positive'
+            },
+
+            // Transfers (not expense)
+            'Transfer': {
+                keywords: ['TRANSFER TO SAVINGS', 'TRANSFER TO CHECKING', 'XFER', 'TFR'],
+                amountDirection: 'any'
+            },
+
+            // Wholesale/Inventory
+            'Cost of Goods': {
+                keywords: ['COSTCO WHSE', 'WHOLESALE', 'INVENTORY'],
+                amountDirection: 'negative'
+            },
+
+            // Refunds
+            'Refund': {
+                keywords: ['REFUND', 'OVERPAYMENT'],
+                amountDirection: 'any'
+            }
+        };
+
+        // ===========================================
+        // CLASSIFIER ENGINE
+        // ===========================================
+
+        function classifyTransaction(transaction) {
+            const description = transaction.description.toUpperCase();
+            const amount = parseFloat(transaction.amount.replace(/[−\-\$,]/g, '-').replace('--', '-'));
+            const isPositive = amount >= 0;
+
+            let bestMatch = null;
+            let bestScore = 0;
+
+            for (const [category, rules] of Object.entries(CLASSIFICATION_RULES)) {
+                let score = 0;
+
+                // Check if any keyword matches
+                const keywordMatch = rules.keywords.some(kw => description.includes(kw.toUpperCase()));
+                if (!keywordMatch) continue;
+
+                // Check exclude keywords
+                if (rules.excludeKeywords) {
+                    const excluded = rules.excludeKeywords.some(kw => description.includes(kw.toUpperCase()));
+                    if (excluded) continue;
+                }
+
+                // Check amount direction
+                if (rules.amountDirection !== 'any') {
+                    const directionMatches = (rules.amountDirection === 'positive' && isPositive) ||
+                                            (rules.amountDirection === 'negative' && !isPositive);
+                    if (!directionMatches) continue;
+                }
+
+                // Calculate match score based on keyword specificity
+                const matchedKeyword = rules.keywords.find(kw => description.includes(kw.toUpperCase()));
+                score = matchedKeyword ? matchedKeyword.length : 0;
+
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestMatch = category;
+                }
+            }
+
+            if (bestMatch) {
+                return {
+                    category: bestMatch,
+                    confidence: bestScore > 10 ? 'high' : bestScore > 5 ? 'medium' : 'low',
+                    method: 'rules'
+                };
+            }
+
+            return {
+                category: 'Uncategorized',
+                confidence: 'low',
+                method: 'none',
+                needsReview: true
+            };
+        }
+
+        // ===========================================
+        // LLM FALLBACK (OpenAI)
+        // ===========================================
+
+        async function classifyWithLLM(transaction, apiKey) {
+            const categories = Object.keys(CLASSIFICATION_RULES).join(', ');
+
+            try {
+                const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${apiKey}`
+                    },
+                    body: JSON.stringify({
+                        model: 'gpt-3.5-turbo',
+                        messages: [{
+                            role: 'system',
+                            content: `You are an expert accountant. Classify bank transactions into accounting categories.
+                                     Available categories: ${categories}
+                                     Respond with ONLY the category name, nothing else.`
+                        }, {
+                            role: 'user',
+                            content: `Classify this transaction:
+                                     Description: ${transaction.description}
+                                     Amount: ${transaction.amount}
+                                     Account: ${transaction.account || 'Unknown'}`
+                        }],
+                        temperature: 0,
+                        max_tokens: 50
+                    })
+                });
+
+                const data = await response.json();
+                const category = data.choices[0].message.content.trim();
+
+                return {
+                    category: category,
+                    confidence: 'medium',
+                    method: 'llm'
+                };
+            } catch (error) {
+                console.error('LLM classification failed:', error);
+                return {
+                    category: 'Uncategorized',
+                    confidence: 'low',
+                    method: 'error',
+                    needsReview: true
+                };
+            }
+        }
+
+        // ===========================================
+        // CSV PARSING
+        // ===========================================
+
+        function parseCSV(csvText) {
+            const lines = csvText.trim().split('\n');
+            const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+
+            const transactions = [];
+            for (let i = 1; i < lines.length; i++) {
+                const values = parseCSVLine(lines[i]);
+                if (values.length === headers.length) {
+                    const transaction = {};
+                    headers.forEach((header, index) => {
+                        transaction[header] = values[index];
+                    });
+                    transactions.push(transaction);
+                }
+            }
+
+            return transactions;
+        }
+
+        function parseCSVLine(line) {
+            const values = [];
+            let current = '';
+            let inQuotes = false;
+
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    values.push(current.trim());
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            values.push(current.trim());
+
+            return values;
+        }
+
+        // ===========================================
+        // UI RENDERING
+        // ===========================================
+
+        function formatCurrency(amount) {
+            const num = parseFloat(amount.replace(/[−\-\$,]/g, '-').replace('--', '-'));
+            const formatted = Math.abs(num).toLocaleString('en-US', {
+                style: 'currency',
+                currency: 'USD'
+            });
+            return num >= 0 ? formatted : `(${formatted})`;
+        }
+
+        function renderResults(transactions, classifications) {
+            const container = document.getElementById('results-container');
+
+            // Calculate stats
+            const total = classifications.length;
+            const highConfidence = classifications.filter(c => c.confidence === 'high').length;
+            const needsReview = classifications.filter(c => c.needsReview).length;
+            const usedLLM = classifications.filter(c => c.method === 'llm').length;
+
+            // Category breakdown
+            const categoryTotals = {};
+            transactions.forEach((t, i) => {
+                const cat = classifications[i].category;
+                const amount = parseFloat(t.amount.replace(/[−\-\$,]/g, '-').replace('--', '-'));
+                categoryTotals[cat] = (categoryTotals[cat] || 0) + amount;
+            });
+
+            let html = `
+                <div class="stats-bar">
+                    <div class="stat">
+                        <div class="stat-value">${total}</div>
+                        <div class="stat-label">Transactions</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value success">${Math.round(highConfidence/total*100)}%</div>
+                        <div class="stat-label">High Confidence</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value warning">${needsReview}</div>
+                        <div class="stat-label">Needs Review</div>
+                    </div>
+                    ${usedLLM > 0 ? `
+                    <div class="stat">
+                        <div class="stat-value info">${usedLLM}</div>
+                        <div class="stat-label">LLM Classified</div>
+                    </div>
+                    ` : ''}
+                </div>
+
+                <div class="results-table-container" style="max-height: 500px; overflow-y: auto;">
+                    <table class="results-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                                <th>Category</th>
+                                <th>Confidence</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            transactions.forEach((t, i) => {
+                const c = classifications[i];
+                const amount = parseFloat(t.amount.replace(/[−\-\$,]/g, '-').replace('--', '-'));
+                const amountClass = amount >= 0 ? 'amount-positive' : 'amount-negative';
+
+                html += `
+                    <tr>
+                        <td>${t.date}</td>
+                        <td class="description-cell" title="${t.description}">${t.description}</td>
+                        <td class="amount-cell ${amountClass}">${formatCurrency(t.amount)}</td>
+                        <td>
+                            <div class="category-cell">
+                                <span class="category-badge">${c.category}</span>
+                                ${c.method === 'llm' ? '<span class="method-badge llm">AI</span>' : ''}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="category-cell">
+                                <span class="confidence-indicator confidence-${c.confidence}"></span>
+                                <span>${c.confidence}</span>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="export-section">
+                    ${needsReview > 0 ? `
+                    <button class="btn btn-primary" onclick="reclassifyWithAI()" id="ai-classify-btn">
+                        Classify ${needsReview} with AI
+                    </button>
+                    ` : ''}
+                    <button class="btn" onclick="exportCSV()">
+                        Export Classified CSV
+                    </button>
+                </div>
+            `;
+
+            container.innerHTML = html;
+
+            // Store for export and reclassification
+            window.classifiedData = { transactions, classifications };
+        }
+
+        // ===========================================
+        // RE-CLASSIFY WITH AI
+        // ===========================================
+
+        async function reclassifyWithAI() {
+            const apiKey = document.getElementById('openai-key').value.trim();
+
+            if (!apiKey) {
+                alert('Please enter your OpenAI API key first.');
+                document.getElementById('openai-key').focus();
+                return;
+            }
+
+            if (!window.classifiedData) return;
+
+            const { transactions, classifications } = window.classifiedData;
+            const needsReviewIndices = classifications
+                .map((c, i) => c.needsReview ? i : -1)
+                .filter(i => i !== -1);
+
+            // Update button to show progress
+            const btn = document.getElementById('ai-classify-btn');
+            const originalText = btn.textContent;
+
+            for (let i = 0; i < needsReviewIndices.length; i++) {
+                const idx = needsReviewIndices[i];
+                btn.textContent = `Classifying ${i + 1}/${needsReviewIndices.length}...`;
+                btn.disabled = true;
+
+                const result = await classifyWithLLM(transactions[idx], apiKey);
+                classifications[idx] = result;
+            }
+
+            // Re-render with updated classifications
+            renderResults(transactions, classifications);
+        }
+
+        function showLoading(message = 'Classifying transactions...') {
+            document.getElementById('results-container').innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <span>${message}</span>
+                </div>
+            `;
+        }
+
+        // ===========================================
+        // MAIN PROCESSING
+        // ===========================================
+
+        async function processTransactions(csvText) {
+            showLoading();
+
+            const transactions = parseCSV(csvText);
+            const apiKey = document.getElementById('openai-key').value.trim();
+            const classifications = [];
+
+            for (const transaction of transactions) {
+                let result = classifyTransaction(transaction);
+
+                // If uncategorized and we have an API key, try LLM
+                if (result.needsReview && apiKey) {
+                    showLoading(`Classifying with AI... (${classifications.length + 1}/${transactions.length})`);
+                    result = await classifyWithLLM(transaction, apiKey);
+                }
+
+                classifications.push(result);
+            }
+
+            renderResults(transactions, classifications);
+        }
+
+        // ===========================================
+        // EXPORT
+        // ===========================================
+
+        function exportCSV() {
+            if (!window.classifiedData) return;
+
+            const { transactions, classifications } = window.classifiedData;
+
+            let csv = 'date,description,amount,account,category,confidence,method\n';
+
+            transactions.forEach((t, i) => {
+                const c = classifications[i];
+                csv += `${t.date},"${t.description}",${t.amount},"${t.account || ''}","${c.category}",${c.confidence},${c.method}\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'classified_transactions.csv';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // ===========================================
+        // EVENT HANDLERS
+        // ===========================================
+
+        // File upload
+        const uploadArea = document.getElementById('upload-area');
+        const fileInput = document.getElementById('file-input');
+
+        uploadArea.addEventListener('click', () => fileInput.click());
+
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file && file.name.endsWith('.csv')) {
+                const reader = new FileReader();
+                reader.onload = (e) => processTransactions(e.target.result);
+                reader.readAsText(file);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => processTransactions(e.target.result);
+                reader.readAsText(file);
+            }
+        });
+
+        // ===========================================
+        // EMBEDDED SAMPLE DATA
+        // ===========================================
+
+        const SAMPLE_SMALL_BUSINESS = `date,description,amount,reference,account
+2024-01-02,STRIPE TRANSFER 240102,4250.00,,Business Checking
+2024-01-03,GUSTO PAYROLL,-3200.00,PAY-001,Business Checking
+2024-01-03,GUSTO PAYROLL TAX,-485.00,PAY-001,Business Checking
+2024-01-05,AMZN MKTP US*2K4X7,-89.99,,Business Credit Card
+2024-01-05,GOOGLE *WORKSPACE,-72.00,,Business Credit Card
+2024-01-08,CHECK DEP - INVOICE 1042,1500.00,1042,Business Checking
+2024-01-08,UBER TRIP 01/07,-34.50,,Business Credit Card
+2024-01-09,COMCAST BUSINESS,-199.00,,Business Checking
+2024-01-10,STRIPE TRANSFER 240110,6780.00,,Business Checking
+2024-01-10,SLACK TECHNOLOGIES,-15.00,,Business Credit Card
+2024-01-12,STAPLES DIRECT,-156.78,,Business Credit Card
+2024-01-12,WF TRANSFER TO SAVINGS,-2000.00,XFER,Business Checking
+2024-01-15,GUSTO PAYROLL,-3200.00,PAY-002,Business Checking
+2024-01-15,GUSTO PAYROLL TAX,-485.00,PAY-002,Business Checking
+2024-01-16,ZOOM.US,-149.90,,Business Credit Card
+2024-01-17,ADOBE *CREATIVE CLOUD,-59.99,,Business Credit Card
+2024-01-18,DELTA AIR 0062341987,-387.00,,Business Credit Card
+2024-01-18,MARRIOTT CHICAGO,-289.00,,Business Credit Card
+2024-01-19,UBER EATS,-42.15,,Business Credit Card
+2024-01-22,STRIPE TRANSFER 240122,3920.00,,Business Checking
+2024-01-22,AWS SERVICES,-234.67,,Business Credit Card
+2024-01-23,LINKEDIN PREMIUM,-59.99,,Business Credit Card
+2024-01-24,PG&E ELECTRIC,-342.00,,Business Checking
+2024-01-25,QUICKBOOKS SUBSCRIPTION,-85.00,,Business Credit Card
+2024-01-26,DOORDASH*ORDER,-28.43,,Business Credit Card
+2024-01-29,STRIPE TRANSFER 240129,5100.00,,Business Checking
+2024-01-29,GUSTO PAYROLL,-3200.00,PAY-003,Business Checking
+2024-01-29,GUSTO PAYROLL TAX,-485.00,PAY-003,Business Checking
+2024-01-30,FEDEX SHIPPING,-45.67,,Business Credit Card
+2024-01-30,HUBSPOT INC,-800.00,,Business Credit Card
+2024-01-31,BANK SERVICE FEE,-25.00,,Business Checking
+2024-02-01,INTEREST EARNED,12.34,,Business Savings
+2024-02-02,STRIPE TRANSFER 240202,4890.00,,Business Checking
+2024-02-05,GITHUB INC,-21.00,,Business Credit Card
+2024-02-05,NOTION LABS,-10.00,,Business Credit Card
+2024-02-06,COSTCO WHSE,-523.45,,Business Credit Card
+2024-02-07,STATE FARM INSURANCE,-450.00,,Business Checking
+2024-02-08,FIGMA INC,-15.00,,Business Credit Card
+2024-02-09,CALENDLY,-12.00,,Business Credit Card
+2024-02-12,CHECK DEP - INVOICE 1089,2750.00,1089,Business Checking
+2024-02-12,UBER TRIP 02/11,-28.90,,Business Credit Card
+2024-02-13,AT&T WIRELESS,-185.00,,Business Checking
+2024-02-14,STRIPE TRANSFER 240214,7200.00,,Business Checking
+2024-02-15,GUSTO PAYROLL,-3200.00,PAY-004,Business Checking
+2024-02-15,GUSTO PAYROLL TAX,-485.00,PAY-004,Business Checking
+2024-02-16,AIRBNB HMQK7N,-412.00,,Business Credit Card
+2024-02-19,USPS PO BOXES,-230.00,,Business Checking
+2024-02-20,CANVA PTY LTD,-12.99,,Business Credit Card
+2024-02-21,UNKNOWN MERCHANT 847293,-67.50,,Business Credit Card
+2024-02-22,WIRE TRANSFER IN - CLIENT ABC,15000.00,WIRE-221,Business Checking
+2024-02-23,CONSULTING FEE DEPOSIT,3500.00,DEP-445,Business Checking`;
+
+        const SAMPLE_ACCOUNTING_FIRM = `date,description,amount,reference,account
+2024-01-02,CLIENT RETAINER - JOHNSON MFG,5000.00,RET-2024-001,Operating Account
+2024-01-03,ADP PAYROLL SERVICES,-8450.00,PAY-001,Operating Account
+2024-01-03,ADP PAYROLL TAX DEPOSIT,-1856.00,PAY-001,Operating Account
+2024-01-04,THOMSON REUTERS CHECKPOINT,-425.00,,Firm Credit Card
+2024-01-05,AICPA MEMBERSHIP DUES,-495.00,,Firm Credit Card
+2024-01-08,CCH AXCESS TAX SOFTWARE,-1200.00,,Operating Account
+2024-01-09,CLIENT PMT - TAX PREP SMITH,850.00,INV-4521,Operating Account
+2024-01-10,OFFICE DEPOT SUPPLIES,-234.56,,Firm Credit Card
+2024-01-10,QUICKBOOKS ONLINE ACCOUNTANT,-0.00,,Firm Credit Card
+2024-01-12,CAMICO E&O INSURANCE,-2400.00,,Operating Account
+2024-01-15,BUILDING RENT - JANUARY,-4500.00,CHK-1001,Operating Account
+2024-01-15,ADP PAYROLL SERVICES,-8450.00,PAY-002,Operating Account
+2024-01-15,ADP PAYROLL TAX DEPOSIT,-1856.00,PAY-002,Operating Account
+2024-01-16,BECKER CPA REVIEW - CPE,-299.00,,Firm Credit Card
+2024-01-17,CLIENT PMT - BOOKKEEPING ACME,1200.00,INV-4523,Operating Account
+2024-01-18,JETBLUE AIRWAYS,-342.00,,Firm Credit Card
+2024-01-18,HILTON HOTELS,-198.00,,Firm Credit Card
+2024-01-19,STATE CPA SOCIETY CONF,-450.00,,Firm Credit Card
+2024-01-22,XERO PARTNER SUBSCRIPTION,-0.00,,Firm Credit Card
+2024-01-22,CLIENT RETAINER - APEX CORP,7500.00,RET-2024-002,Operating Account
+2024-01-23,DEXT (RECEIPT BANK),-50.00,,Firm Credit Card
+2024-01-24,KARBON WORKFLOW SOFTWARE,-99.00,,Firm Credit Card
+2024-01-25,VERIZON BUSINESS,-245.00,,Operating Account
+2024-01-26,LACERTE TAX SOFTWARE,-3200.00,,Operating Account
+2024-01-29,ADP PAYROLL SERVICES,-8450.00,PAY-003,Operating Account
+2024-01-29,ADP PAYROLL TAX DEPOSIT,-1856.00,PAY-003,Operating Account
+2024-01-30,CLIO PAYMENTS - CLIENT TRUST,2340.00,CLIO-992,Trust Account
+2024-01-31,BANK ANALYSIS FEE,-35.00,,Operating Account
+2024-02-01,INTEREST - TRUST ACCOUNT,8.92,,Trust Account
+2024-02-02,CLIENT PMT - 1040 PREP DAVIS,425.00,INV-4530,Operating Account
+2024-02-05,CALENDLY SCHEDULING,-16.00,,Firm Credit Card
+2024-02-05,CANVA DESIGN,-12.99,,Firm Credit Card
+2024-02-06,WOLTERS KLUWER CCH,-650.00,,Operating Account
+2024-02-07,CLIENT ADVISORY FEE - TECH STARTUP,3500.00,INV-4532,Operating Account
+2024-02-08,ZOOM VIDEO COMMUNICATIONS,-199.90,,Firm Credit Card
+2024-02-09,MICROSOFT 365 BUSINESS,-264.00,,Firm Credit Card
+2024-02-12,SAFESEND RETURNS,-75.00,,Firm Credit Card
+2024-02-12,ADP PAYROLL SERVICES,-8450.00,PAY-004,Operating Account
+2024-02-12,ADP PAYROLL TAX DEPOSIT,-1856.00,PAY-004,Operating Account
+2024-02-14,CLIENT PMT - MONTHLY BOOKS,950.00,INV-4535,Operating Account
+2024-02-15,BUILDING RENT - FEBRUARY,-4500.00,CHK-1002,Operating Account
+2024-02-16,SHAREFILE CITRIX,-55.00,,Firm Credit Card
+2024-02-19,CPE WEBINAR - TAX UPDATE,-79.00,,Firm Credit Card
+2024-02-20,UBER TRIP CLIENT MEETING,-24.50,,Firm Credit Card
+2024-02-21,PRACTICE CS SOFTWARE,-185.00,,Firm Credit Card
+2024-02-22,UNKNOWN VENDOR 9X7Y2,-125.00,,Firm Credit Card
+2024-02-23,REFUND - OVERPAYMENT CLIENT,-500.00,REF-001,Operating Account
+2024-02-26,ADP PAYROLL SERVICES,-8450.00,PAY-005,Operating Account
+2024-02-26,ADP PAYROLL TAX DEPOSIT,-1856.00,PAY-005,Operating Account
+2024-02-28,CLIENT RETAINER - SMITH HOLDINGS,4000.00,RET-2024-003,Operating Account
+2024-02-29,INTUIT PROCONNECT TAX,-89.00,,Firm Credit Card`;
+
+        // Sample data buttons
+        document.getElementById('load-small-business').addEventListener('click', () => {
+            processTransactions(SAMPLE_SMALL_BUSINESS);
+        });
+
+        document.getElementById('load-accounting-firm').addEventListener('click', () => {
+            processTransactions(SAMPLE_ACCOUNTING_FIRM);
+        });
+    </script>
+</body>
+</html>
