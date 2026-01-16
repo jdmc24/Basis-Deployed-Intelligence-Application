@@ -643,6 +643,158 @@
             margin-bottom: 1rem;
             opacity: 0.5;
         }
+
+        /* ============================================
+           MOBILE RESPONSIVE STYLES
+           ============================================ */
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 0.75rem;
+                text-align: center;
+            }
+
+            .header h1 {
+                font-size: 1.2rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .intro h2 {
+                font-size: 1.1rem;
+            }
+
+            .intro p {
+                font-size: 0.9rem;
+            }
+
+            .panel {
+                padding: 1rem;
+            }
+
+            .upload-area {
+                padding: 1.5rem 1rem;
+            }
+
+            .upload-area svg {
+                width: 32px;
+                height: 32px;
+            }
+
+            .upload-area p {
+                font-size: 0.85rem;
+            }
+
+            .btn-reconcile {
+                padding: 0.75rem 2rem;
+                font-size: 0.9rem;
+            }
+
+            .summary-value {
+                font-size: 1.25rem;
+            }
+
+            .summary-value.currency {
+                font-size: 1rem;
+            }
+
+            .summary-label {
+                font-size: 0.6rem;
+            }
+
+            .summary-card {
+                padding: 0.75rem;
+            }
+
+            .discrepancy-header {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .discrepancy-amount {
+                font-size: 0.8rem;
+            }
+
+            .discrepancy-badge {
+                font-size: 0.6rem;
+            }
+
+            .matched-table th,
+            .matched-table td {
+                padding: 0.4rem 0.5rem;
+                font-size: 0.7rem;
+            }
+
+            .footer {
+                padding: 1rem;
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1rem;
+            }
+
+            .back-link {
+                font-size: 0.8rem;
+            }
+
+            .summary-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .summary-row .summary-card:last-child {
+                grid-column: span 2;
+            }
+
+            .summary-value {
+                font-size: 1.1rem;
+            }
+
+            .summary-value.currency {
+                font-size: 0.9rem;
+            }
+
+            .discrepancy-list {
+                max-height: 350px;
+            }
+
+            .discrepancy-item {
+                padding: 0.75rem;
+            }
+
+            .discrepancy-desc {
+                font-size: 0.8rem;
+            }
+
+            .detail-row {
+                font-size: 0.75rem;
+            }
+
+            .suggestion-box {
+                padding: 0.75rem;
+            }
+
+            .suggestion-text {
+                font-size: 0.8rem;
+            }
+
+            .matched-table-container {
+                max-height: 200px;
+            }
+
+            .config-section input {
+                font-size: 0.8rem;
+            }
+        }
     </style>
 </head>
 <body>

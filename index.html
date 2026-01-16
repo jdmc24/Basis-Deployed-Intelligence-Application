@@ -474,6 +474,200 @@
         .methodology-link a:hover {
             text-decoration: underline;
         }
+
+        /* ============================================
+           MOBILE RESPONSIVE STYLES
+           ============================================ */
+
+        /* Tablet and below */
+        @media (max-width: 1024px) {
+            .header {
+                flex-wrap: wrap;
+                gap: 12px;
+                padding: 14px 18px;
+            }
+
+            .header-nav {
+                order: 3;
+                width: 100%;
+                margin: 0;
+                flex-wrap: wrap;
+                justify-content: flex-start;
+            }
+
+            .nav-link {
+                font-size: 11px;
+                padding: 6px 10px;
+            }
+
+            .header-stats {
+                gap: 20px;
+            }
+
+            .stat-value {
+                font-size: 20px;
+            }
+
+            .sidebar {
+                width: 320px;
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .header {
+                padding: 12px 14px;
+            }
+
+            .header-left {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .logo {
+                font-size: 18px;
+            }
+
+            .logo-sub {
+                font-size: 11px;
+            }
+
+            .header-stats {
+                width: 100%;
+                justify-content: center;
+                gap: 24px;
+            }
+
+            .stat-value {
+                font-size: 18px;
+            }
+
+            .stat-label {
+                font-size: 9px;
+            }
+
+            .header-nav {
+                justify-content: center;
+            }
+
+            .nav-link {
+                font-size: 10px;
+                padding: 6px 8px;
+            }
+
+            .nav-link svg {
+                width: 12px;
+                height: 12px;
+            }
+
+            /* Stack layout vertically */
+            .main-container {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                max-height: 50vh;
+                border-right: none;
+                border-bottom: 1px solid var(--border-subtle);
+            }
+
+            .firm-list {
+                max-height: 30vh;
+            }
+
+            #map {
+                width: 100%;
+                height: 50vh;
+                min-height: 300px;
+            }
+
+            .filters {
+                padding: 12px 14px;
+            }
+
+            .filter-btn {
+                padding: 6px 10px;
+                font-size: 11px;
+            }
+
+            .filter-select {
+                padding: 6px 10px;
+                font-size: 11px;
+                min-width: 120px;
+            }
+
+            .firm-card {
+                padding: 12px 14px;
+            }
+
+            .firm-name {
+                font-size: 13px;
+            }
+
+            .firm-opportunity {
+                font-size: 13px;
+            }
+        }
+
+        /* Small mobile */
+        @media (max-width: 480px) {
+            .header-left {
+                gap: 12px;
+            }
+
+            .logo-divider {
+                display: none;
+            }
+
+            .header-stats {
+                gap: 16px;
+            }
+
+            .stat {
+                text-align: center;
+            }
+
+            .stat-value {
+                font-size: 16px;
+            }
+
+            .nav-link span:not(.nav-link svg) {
+                display: none;
+            }
+
+            /* Show only icons on very small screens */
+            .nav-link {
+                padding: 8px;
+                gap: 0;
+            }
+
+            .filter-row {
+                gap: 6px;
+            }
+
+            .filter-btn {
+                padding: 5px 8px;
+                font-size: 10px;
+            }
+
+            .filter-select {
+                min-width: 100px;
+                font-size: 10px;
+            }
+
+            .firm-stats {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .methodology-link {
+                font-size: 10px;
+                padding: 10px 14px;
+            }
+        }
     </style>
 </head>
 <body>

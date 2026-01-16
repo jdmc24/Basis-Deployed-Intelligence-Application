@@ -464,6 +464,132 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+
+        /* ============================================
+           MOBILE RESPONSIVE STYLES
+           ============================================ */
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 0.75rem;
+                text-align: center;
+            }
+
+            .header h1 {
+                font-size: 1.2rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .intro h2 {
+                font-size: 1.1rem;
+            }
+
+            .intro p {
+                font-size: 0.9rem;
+            }
+
+            .panel {
+                padding: 1rem;
+            }
+
+            .upload-area {
+                padding: 1.5rem 1rem;
+            }
+
+            .upload-area svg {
+                width: 36px;
+                height: 36px;
+            }
+
+            .stats-bar {
+                gap: 0.75rem;
+            }
+
+            .stat {
+                padding: 0.75rem 1rem;
+                min-width: 100px;
+                flex: 1;
+            }
+
+            .stat-value {
+                font-size: 1.25rem;
+            }
+
+            .results-table th,
+            .results-table td {
+                padding: 0.5rem;
+                font-size: 0.75rem;
+            }
+
+            .description-cell {
+                max-width: 120px;
+                font-size: 0.7rem;
+            }
+
+            .category-badge {
+                font-size: 0.65rem;
+                padding: 0.2rem 0.5rem;
+            }
+
+            .btn {
+                font-size: 0.75rem;
+                padding: 0.6rem 0.8rem;
+            }
+
+            .export-section {
+                flex-direction: column;
+            }
+
+            .footer {
+                padding: 1rem;
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1rem;
+            }
+
+            .back-link {
+                font-size: 0.8rem;
+            }
+
+            .stats-bar {
+                flex-direction: column;
+            }
+
+            .stat {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .stat-value {
+                order: 2;
+            }
+
+            .stat-label {
+                order: 1;
+            }
+
+            .results-table-container {
+                max-height: 350px;
+            }
+
+            .config-section input {
+                font-size: 0.8rem;
+            }
+        }
     </style>
 </head>
 <body>

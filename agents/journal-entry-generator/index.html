@@ -731,6 +731,191 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+
+        /* ============================================
+           MOBILE RESPONSIVE STYLES
+           ============================================ */
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 1rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 0.75rem;
+                text-align: center;
+            }
+
+            .header h1 {
+                font-size: 1.2rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .intro h2 {
+                font-size: 1.1rem;
+            }
+
+            .intro p {
+                font-size: 0.9rem;
+            }
+
+            .panel {
+                padding: 1rem;
+            }
+
+            .upload-area {
+                padding: 1.5rem 1rem;
+            }
+
+            .upload-icon {
+                width: 36px;
+                height: 36px;
+            }
+
+            .sample-data {
+                flex-direction: column;
+            }
+
+            .sample-item {
+                min-width: 100%;
+            }
+
+            .api-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .api-input-group {
+                min-width: 100%;
+            }
+
+            .generate-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .summary-card .value {
+                font-size: 1.25rem;
+            }
+
+            .summary-card .label {
+                font-size: 0.7rem;
+            }
+
+            .entry-header {
+                flex-direction: column;
+                gap: 0.75rem;
+                align-items: flex-start;
+            }
+
+            .entry-header-left {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .entry-title {
+                font-size: 0.9rem;
+            }
+
+            .confidence-badge {
+                font-size: 0.65rem;
+            }
+
+            .entry-table {
+                font-size: 0.8rem;
+            }
+
+            .entry-table th,
+            .entry-table td {
+                padding: 0.5rem;
+            }
+
+            .entry-table .indent {
+                padding-left: 1rem;
+            }
+
+            .totals-row {
+                flex-direction: column;
+                gap: 0.5rem;
+                padding: 0.75rem 1rem;
+            }
+
+            .modal {
+                max-height: 90vh;
+                margin: 1rem;
+            }
+
+            .modal-header {
+                padding: 0.75rem 1rem;
+            }
+
+            .modal-body {
+                padding: 1rem;
+            }
+
+            .footer {
+                padding: 1.5rem 1rem;
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1rem;
+            }
+
+            .back-link {
+                font-size: 0.8rem;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.5rem;
+            }
+
+            .summary-card {
+                padding: 0.75rem;
+            }
+
+            .summary-card .value {
+                font-size: 1.1rem;
+            }
+
+            .entry-body {
+                padding: 1rem;
+            }
+
+            .entry-explanation {
+                padding: 0.75rem;
+            }
+
+            .entry-explanation p {
+                font-size: 0.85rem;
+            }
+
+            .entry-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .preview-table {
+                font-size: 0.75rem;
+            }
+
+            .preview-table th,
+            .preview-table td {
+                padding: 0.5rem;
+            }
+        }
     </style>
 </head>
 <body>
