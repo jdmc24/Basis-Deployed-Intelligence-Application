@@ -94,4 +94,4 @@ Where:
 
 ---
 
-*Built by [Your Name] as part of a Basis job application, January 2025*
+*Built by Jake McCorkle as part of a Basis job application, January 2025*
