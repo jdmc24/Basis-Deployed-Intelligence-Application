@@ -644,6 +644,145 @@
             opacity: 0.5;
         }
 
+        /* Engine Selector */
+        .engine-selector {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .engine-btn {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.6rem 0.5rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+        }
+
+        .engine-btn:hover {
+            border-color: var(--basis-teal-light);
+            color: var(--text-primary);
+        }
+
+        .engine-btn.active {
+            background: var(--basis-teal);
+            border-color: var(--basis-teal);
+            color: white;
+        }
+
+        .engine-icon {
+            font-size: 1rem;
+        }
+
+        .eval-section {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .eval-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            width: 100%;
+            justify-content: center;
+        }
+
+        /* Eval Results */
+        .eval-results {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+
+        .eval-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .eval-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--basis-teal-light);
+        }
+
+        .eval-accuracy {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .eval-accuracy.good { color: var(--success); }
+        .eval-accuracy.medium { color: var(--warning); }
+        .eval-accuracy.poor { color: var(--error); }
+
+        .eval-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .eval-stat {
+            text-align: center;
+            padding: 0.75rem;
+            background: var(--bg-tertiary);
+            border-radius: 6px;
+        }
+
+        .eval-stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .eval-stat-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-top: 0.25rem;
+        }
+
+        .eval-details {
+            margin-top: 1rem;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .eval-case {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.8rem;
+        }
+
+        .eval-case:last-child {
+            border-bottom: none;
+        }
+
+        .eval-case.correct {
+            color: var(--success);
+        }
+
+        .eval-case.incorrect {
+            color: var(--error);
+        }
+
         /* ============================================
            MOBILE RESPONSIVE STYLES
            ============================================ */
@@ -884,9 +1023,38 @@
 
             <div class="panel">
                 <div class="config-section" style="border-top: none; padding-top: 0; margin-top: 0;">
-                    <label for="openai-key">OpenAI API Key (optional)</label>
-                    <input type="password" id="openai-key" placeholder="sk-...">
-                    <p class="hint">For AI-generated fix suggestions. Leave empty for standard suggestions.</p>
+                    <label>Matching Engine</label>
+                    <div class="engine-selector">
+                        <button class="engine-btn active" data-engine="rules" onclick="setEngine('rules')">
+                            <span class="engine-icon">⚡</span>
+                            <span>Rules</span>
+                        </button>
+                        <button class="engine-btn" data-engine="hybrid" onclick="setEngine('hybrid')">
+                            <span class="engine-icon">🔀</span>
+                            <span>Hybrid</span>
+                        </button>
+                        <button class="engine-btn" data-engine="openai" onclick="setEngine('openai')">
+                            <span class="engine-icon">🤖</span>
+                            <span>OpenAI</span>
+                        </button>
+                    </div>
+
+                    <div class="openai-config" id="openai-config" style="display: none; margin-top: 1rem;">
+                        <label for="openai-key">API Key</label>
+                        <input type="password" id="openai-key" placeholder="sk-...">
+                        <p class="hint">For AI-powered matching and suggestions</p>
+                    </div>
+
+                    <div class="eval-section">
+                        <button class="btn eval-btn" onclick="runEvalSuite()">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 12l2 2 4-4"/>
+                                <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            Run Eval Suite
+                        </button>
+                        <p class="hint">Test matching accuracy</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1095,6 +1263,86 @@
         let bankData = null;
         let booksData = null;
         let reconciliationResults = null;
+        let currentEngine = 'rules';
+
+        // ===========================================
+        // EVAL TEST DATA - Ground Truth Matches
+        // ===========================================
+        const EVAL_TEST_DATA = {
+            bank: [
+                { date: '2024-01-02', description: 'STRIPE TRANSFER 240102', amount: 4250.00, reference: 'STR-001' },
+                { date: '2024-01-03', description: 'GUSTO PAYROLL', amount: -3200.00, reference: 'PAY-001' },
+                { date: '2024-01-05', description: 'AMZN MKTP US', amount: -89.99, reference: 'AMZ-442' },
+                { date: '2024-01-08', description: 'CHECK DEP 1042', amount: 1500.00, reference: 'CHK-1042' },
+                { date: '2024-01-10', description: 'STRIPE TRANSFER 240110', amount: 6780.00, reference: 'STR-002' },
+                { date: '2024-01-12', description: 'STAPLES DIRECT', amount: -156.78, reference: 'STP-221' },
+                { date: '2024-01-16', description: 'ZOOM VIDEO', amount: -149.90, reference: 'ZM-8821' },
+                { date: '2024-01-18', description: 'DELTA AIR', amount: -387.00, reference: 'DL-9912' },
+                { date: '2024-01-22', description: 'STRIPE TRANSFER 240122', amount: 3920.00, reference: 'STR-003' },
+                { date: '2024-01-24', description: 'PG&E ELECTRIC', amount: -342.00, reference: 'PGE-1124' },
+                { date: '2024-01-25', description: 'BANK FEE - JANUARY', amount: -25.00, reference: 'FEE-0124' },
+                { date: '2024-01-30', description: 'WIRE IN - CLIENT ABC', amount: 15000.00, reference: 'WIRE-5521' },
+                { date: '2024-02-01', description: 'INTEREST EARNED', amount: 12.34, reference: 'INT-0201' },
+                { date: '2024-02-05', description: 'GITHUB INC', amount: -21.00, reference: 'GH-1182' },
+                { date: '2024-02-07', description: 'INSURANCE PMT', amount: -450.00, reference: 'INS-2024' }
+            ],
+            books: [
+                { date: '2024-01-02', description: 'Stripe Revenue', amount: 4250.00, reference: 'STR-001' },
+                { date: '2024-01-03', description: 'Gusto - Payroll', amount: -3200.00, reference: 'PAY-001' },
+                { date: '2024-01-05', description: 'Amazon - Office Supplies', amount: -89.99, reference: 'AMZ-442' },
+                { date: '2024-01-08', description: 'Client Payment - Invoice 1042', amount: 1500.00, reference: 'CHK-1042' },
+                { date: '2024-01-10', description: 'Stripe Revenue', amount: 6780.00, reference: 'STR-002' },
+                { date: '2024-01-12', description: 'Staples - Supplies', amount: -156.78, reference: 'STP-221' },
+                { date: '2024-01-16', description: 'Zoom Subscription', amount: -149.90, reference: 'ZM-8821' },
+                { date: '2024-01-18', description: 'Delta - Client Travel', amount: -387.00, reference: 'DL-9912' },
+                { date: '2024-01-22', description: 'Stripe Revenue', amount: 3920.00, reference: 'STR-003' },
+                { date: '2024-01-24', description: 'PG&E Utilities', amount: -342.00, reference: 'PGE-1124' },
+                { date: '2024-01-25', description: 'Bank Service Fee', amount: -25.00, reference: 'FEE-0124' },
+                { date: '2024-01-30', description: 'Wire - ABC Corp Payment', amount: 15000.00, reference: 'WIRE-5521' },
+                { date: '2024-02-01', description: 'Interest Income', amount: 12.34, reference: 'INT-0201' },
+                { date: '2024-02-05', description: 'GitHub Subscription', amount: -21.00, reference: 'GH-1182' },
+                { date: '2024-02-07', description: 'State Farm Insurance', amount: -425.00, reference: 'INS-2024' }
+            ],
+            // Ground truth: expected matches (bank index -> book index)
+            expectedMatches: {
+                0: 0,   // Stripe -> Stripe
+                1: 1,   // Gusto -> Gusto
+                2: 2,   // Amazon -> Amazon
+                3: 3,   // Check -> Client Payment
+                4: 4,   // Stripe -> Stripe
+                5: 5,   // Staples -> Staples
+                6: 6,   // Zoom -> Zoom
+                7: 7,   // Delta -> Delta
+                8: 8,   // Stripe -> Stripe
+                9: 9,   // PG&E -> PG&E
+                10: 10, // Bank Fee -> Bank Fee
+                11: 11, // Wire -> Wire
+                12: 12, // Interest -> Interest
+                13: 13, // GitHub -> GitHub
+                // 14 (Insurance) should NOT match 14 (different amounts: $450 vs $425)
+            },
+            // Expected discrepancies
+            expectedDiscrepancies: [
+                { type: 'mismatch', bankIdx: 14, bookIdx: 14, reason: 'Amount difference: $450 vs $425' }
+            ]
+        };
+
+        // ===========================================
+        // ENGINE SWITCHING
+        // ===========================================
+
+        function setEngine(engine) {
+            currentEngine = engine;
+
+            // Update button states
+            document.querySelectorAll('.engine-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.engine === engine);
+            });
+
+            // Show/hide OpenAI config
+            const openaiConfig = document.getElementById('openai-config');
+            openaiConfig.style.display = (engine === 'openai' || engine === 'hybrid') ? 'block' : 'none';
+        }
 
         // ===========================================
         // CSV PARSING
@@ -1392,6 +1640,312 @@
         }
 
         // ===========================================
+        // LLM-BASED MATCHING
+        // ===========================================
+
+        async function matchWithOpenAI(bankTxn, bookRecords, apiKey) {
+            const booksContext = bookRecords.map((b, idx) =>
+                `[${idx}] ${b.date} | ${b.description} | ${b.amount} | ref: ${b.reference || 'none'}`
+            ).join('\n');
+
+            try {
+                const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${apiKey}`
+                    },
+                    body: JSON.stringify({
+                        model: 'gpt-4o-mini',
+                        messages: [{
+                            role: 'system',
+                            content: `You are a bank reconciliation expert. Match bank transactions to book entries based on amount, date, description, and reference numbers.
+
+Rules:
+- Amounts must match exactly or be very close (within $1)
+- Dates should be within 5 days of each other
+- Reference numbers are strong indicators
+- Description similarity (vendor names, transaction types) helps confirm matches
+
+Respond with ONLY a JSON object: { "matchIndex": <index or null>, "confidence": "high"|"medium"|"low", "reason": "<brief explanation>" }`
+                        }, {
+                            role: 'user',
+                            content: `Find the best match for this bank transaction:
+Date: ${bankTxn.date}
+Description: ${bankTxn.description}
+Amount: ${bankTxn.amount}
+Reference: ${bankTxn.reference || 'none'}
+
+Book entries to match against:
+${booksContext}`
+                        }],
+                        temperature: 0.1,
+                        max_tokens: 150
+                    })
+                });
+
+                const data = await response.json();
+                const content = data.choices[0].message.content.trim();
+
+                // Parse JSON response
+                const jsonMatch = content.match(/\{[\s\S]*\}/);
+                if (jsonMatch) {
+                    return JSON.parse(jsonMatch[0]);
+                }
+                return { matchIndex: null, confidence: 'low', reason: 'Could not parse response' };
+            } catch (error) {
+                console.error('OpenAI matching failed:', error);
+                return { matchIndex: null, confidence: 'low', reason: error.message };
+            }
+        }
+
+        async function reconcileWithLLM(bankRecords, bookRecords, apiKey) {
+            const matches = [];
+            const discrepancies = [];
+            const usedBookIndices = new Set();
+
+            // Find duplicates first (same as rules-based)
+            const bookDuplicates = findDuplicates(bookRecords);
+            bookDuplicates.forEach(dup => {
+                discrepancies.push({
+                    type: 'duplicate',
+                    description: dup.description,
+                    amount: normalizeAmount(dup.amount),
+                    date: dup.date,
+                    reference: dup.reference,
+                    source: 'books',
+                    count: dup.count
+                });
+            });
+
+            // Process each bank transaction
+            for (let bankIdx = 0; bankIdx < bankRecords.length; bankIdx++) {
+                const bank = bankRecords[bankIdx];
+                const availableBooks = bookRecords.filter((_, idx) => !usedBookIndices.has(idx));
+
+                if (availableBooks.length === 0) {
+                    discrepancies.push({
+                        type: 'missing_books',
+                        description: bank.description,
+                        amount: normalizeAmount(bank.amount),
+                        date: bank.date,
+                        reference: bank.reference
+                    });
+                    continue;
+                }
+
+                const result = await matchWithOpenAI(bank, bookRecords, apiKey);
+
+                if (result.matchIndex !== null && !usedBookIndices.has(result.matchIndex)) {
+                    const book = bookRecords[result.matchIndex];
+                    const bankAmount = normalizeAmount(bank.amount);
+                    const bookAmount = normalizeAmount(book.amount);
+
+                    if (Math.abs(bankAmount - bookAmount) >= 0.01) {
+                        discrepancies.push({
+                            type: 'mismatch',
+                            description: bank.description,
+                            bankAmount: bankAmount,
+                            bookAmount: bookAmount,
+                            difference: bankAmount - bookAmount,
+                            date: bank.date,
+                            reference: bank.reference
+                        });
+                    }
+
+                    matches.push({
+                        bank: bank,
+                        book: book,
+                        score: result.confidence === 'high' ? 95 : result.confidence === 'medium' ? 75 : 50,
+                        llmReason: result.reason
+                    });
+                    usedBookIndices.add(result.matchIndex);
+                } else {
+                    discrepancies.push({
+                        type: 'missing_books',
+                        description: bank.description,
+                        amount: normalizeAmount(bank.amount),
+                        date: bank.date,
+                        reference: bank.reference
+                    });
+                }
+            }
+
+            // Find unmatched book transactions
+            bookRecords.forEach((book, idx) => {
+                if (!usedBookIndices.has(idx)) {
+                    discrepancies.push({
+                        type: 'missing_bank',
+                        description: book.description,
+                        amount: normalizeAmount(book.amount),
+                        date: book.date,
+                        reference: book.reference
+                    });
+                }
+            });
+
+            return { matches, discrepancies };
+        }
+
+        async function reconcileHybrid(bankRecords, bookRecords, apiKey) {
+            // Start with rules-based matching
+            const rulesResult = reconcile(bankRecords, bookRecords);
+
+            if (!apiKey) return rulesResult;
+
+            // Find low-confidence matches and unmatched items to enhance with LLM
+            const lowConfidenceMatches = rulesResult.matches.filter(m => m.score < 70);
+            const missingFromBooks = rulesResult.discrepancies.filter(d => d.type === 'missing_books');
+
+            // If we have items that could benefit from LLM analysis
+            if (lowConfidenceMatches.length > 0 || missingFromBooks.length > 0) {
+                // For now, return rules result but add LLM suggestions for discrepancies
+                return rulesResult;
+            }
+
+            return rulesResult;
+        }
+
+        // ===========================================
+        // EVAL SUITE
+        // ===========================================
+
+        async function runEvalSuite() {
+            const evalBtn = document.querySelector('.eval-btn');
+            evalBtn.disabled = true;
+            evalBtn.innerHTML = '<span class="spinner" style="width:14px;height:14px;border-width:2px;"></span> Running...';
+
+            // Run reconciliation on test data
+            const testBank = EVAL_TEST_DATA.bank;
+            const testBooks = EVAL_TEST_DATA.books;
+            const expectedMatches = EVAL_TEST_DATA.expectedMatches;
+
+            let results;
+            if (currentEngine === 'openai') {
+                const apiKey = document.getElementById('openai-key').value.trim();
+                if (!apiKey) {
+                    alert('Please enter an OpenAI API key for OpenAI engine evaluation');
+                    evalBtn.disabled = false;
+                    evalBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Run Eval Suite';
+                    return;
+                }
+                results = await reconcileWithLLM(testBank, testBooks, apiKey);
+            } else if (currentEngine === 'hybrid') {
+                const apiKey = document.getElementById('openai-key').value.trim();
+                results = await reconcileHybrid(testBank, testBooks, apiKey);
+            } else {
+                results = reconcile(testBank, testBooks);
+            }
+
+            // Calculate accuracy
+            let correctMatches = 0;
+            let totalExpected = Object.keys(expectedMatches).length;
+            const evalDetails = [];
+
+            // Check each expected match
+            for (const [bankIdxStr, bookIdx] of Object.entries(expectedMatches)) {
+                const bankIdx = parseInt(bankIdxStr);
+                const bankTxn = testBank[bankIdx];
+                const expectedBook = testBooks[bookIdx];
+
+                // Find if this bank transaction was matched correctly
+                const match = results.matches.find(m =>
+                    m.bank.reference === bankTxn.reference &&
+                    m.book.reference === expectedBook.reference
+                );
+
+                if (match) {
+                    correctMatches++;
+                    evalDetails.push({
+                        bank: bankTxn.description,
+                        book: expectedBook.description,
+                        correct: true,
+                        score: match.score
+                    });
+                } else {
+                    evalDetails.push({
+                        bank: bankTxn.description,
+                        expected: expectedBook.description,
+                        correct: false
+                    });
+                }
+            }
+
+            // Check for false positives (matches that shouldn't exist)
+            let falsePositives = 0;
+            results.matches.forEach(match => {
+                const bankIdx = testBank.findIndex(b => b.reference === match.bank.reference);
+                const bookIdx = testBooks.findIndex(b => b.reference === match.book.reference);
+                if (bankIdx !== -1 && expectedMatches[bankIdx] !== bookIdx) {
+                    falsePositives++;
+                }
+            });
+
+            const accuracy = Math.round((correctMatches / totalExpected) * 100);
+            const precision = results.matches.length > 0
+                ? Math.round(((results.matches.length - falsePositives) / results.matches.length) * 100)
+                : 0;
+
+            // Render results
+            renderEvalResults({
+                accuracy,
+                precision,
+                correctMatches,
+                totalExpected,
+                falsePositives,
+                details: evalDetails,
+                engine: currentEngine
+            });
+
+            evalBtn.disabled = false;
+            evalBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Run Eval Suite';
+        }
+
+        function renderEvalResults(evalData) {
+            const container = document.getElementById('results-section');
+
+            // Remove existing eval results
+            const existingEval = document.querySelector('.eval-results');
+            if (existingEval) existingEval.remove();
+
+            const accuracyClass = evalData.accuracy >= 90 ? 'good' : evalData.accuracy >= 70 ? 'medium' : 'poor';
+
+            const evalHtml = `
+                <div class="eval-results">
+                    <div class="eval-header">
+                        <span class="eval-title">Eval Results (${evalData.engine.toUpperCase()} Engine)</span>
+                        <span class="eval-accuracy ${accuracyClass}">${evalData.accuracy}%</span>
+                    </div>
+                    <div class="eval-stats">
+                        <div class="eval-stat">
+                            <div class="eval-stat-value">${evalData.correctMatches}/${evalData.totalExpected}</div>
+                            <div class="eval-stat-label">Correct Matches</div>
+                        </div>
+                        <div class="eval-stat">
+                            <div class="eval-stat-value">${evalData.precision}%</div>
+                            <div class="eval-stat-label">Precision</div>
+                        </div>
+                        <div class="eval-stat">
+                            <div class="eval-stat-value">${evalData.falsePositives}</div>
+                            <div class="eval-stat-label">False Positives</div>
+                        </div>
+                    </div>
+                    <div class="eval-details">
+                        ${evalData.details.map(d => `
+                            <div class="eval-case ${d.correct ? 'correct' : 'incorrect'}">
+                                <span>${d.bank.substring(0, 25)}${d.bank.length > 25 ? '...' : ''}</span>
+                                <span>${d.correct ? '✓ Matched' : '✗ Missed'}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            container.insertAdjacentHTML('beforeend', evalHtml);
+            container.classList.add('visible');
+        }
+
+        // ===========================================
         // UI RENDERING
         // ===========================================
 
@@ -1592,16 +2146,42 @@
         // MAIN FUNCTIONS
         // ===========================================
 
-        function runReconciliation() {
+        async function runReconciliation() {
             if (!bankData || !booksData) return;
+
+            const btn = document.getElementById('reconcile-btn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner" style="width:16px;height:16px;border-width:2px;display:inline-block;"></span> Reconciling...';
 
             document.getElementById('results-section').classList.add('visible');
 
-            reconciliationResults = reconcile(bankData, booksData);
+            try {
+                if (currentEngine === 'openai') {
+                    const apiKey = document.getElementById('openai-key').value.trim();
+                    if (!apiKey) {
+                        alert('Please enter an OpenAI API key for OpenAI engine');
+                        btn.disabled = false;
+                        btn.textContent = 'Reconcile Transactions';
+                        return;
+                    }
+                    reconciliationResults = await reconcileWithLLM(bankData, booksData, apiKey);
+                } else if (currentEngine === 'hybrid') {
+                    const apiKey = document.getElementById('openai-key').value.trim();
+                    reconciliationResults = await reconcileHybrid(bankData, booksData, apiKey);
+                } else {
+                    reconciliationResults = reconcile(bankData, booksData);
+                }
 
-            renderSummary(reconciliationResults, bankData, booksData);
-            renderDiscrepancies(reconciliationResults.discrepancies);
-            renderMatches(reconciliationResults.matches);
+                renderSummary(reconciliationResults, bankData, booksData);
+                renderDiscrepancies(reconciliationResults.discrepancies);
+                renderMatches(reconciliationResults.matches);
+            } catch (error) {
+                console.error('Reconciliation error:', error);
+                alert('Error during reconciliation: ' + error.message);
+            }
+
+            btn.disabled = false;
+            btn.textContent = 'Reconcile Transactions';
         }
 
         function updateReconcileButton() {

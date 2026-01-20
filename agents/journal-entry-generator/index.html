@@ -732,6 +732,165 @@
             to { transform: rotate(360deg); }
         }
 
+        /* Engine Selector */
+        .engine-selector {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .engine-btn {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.6rem 0.5rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+        }
+
+        .engine-btn:hover {
+            border-color: var(--basis-teal-light);
+            color: var(--text-primary);
+        }
+
+        .engine-btn.active {
+            background: var(--basis-teal);
+            border-color: var(--basis-teal);
+            color: white;
+        }
+
+        .engine-icon {
+            font-size: 1rem;
+        }
+
+        .eval-section {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .eval-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+
+        .eval-btn:hover {
+            border-color: var(--basis-teal-light);
+            color: var(--text-primary);
+        }
+
+        .eval-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Eval Results */
+        .eval-results {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+        }
+
+        .eval-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .eval-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--basis-teal-light);
+        }
+
+        .eval-accuracy {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .eval-accuracy.good { color: var(--success); }
+        .eval-accuracy.medium { color: var(--warning); }
+        .eval-accuracy.poor { color: var(--error); }
+
+        .eval-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .eval-stat {
+            text-align: center;
+            padding: 0.75rem;
+            background: var(--bg-tertiary);
+            border-radius: 6px;
+        }
+
+        .eval-stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .eval-stat-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-top: 0.25rem;
+        }
+
+        .eval-details {
+            margin-top: 1rem;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .eval-case {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.8rem;
+        }
+
+        .eval-case:last-child {
+            border-bottom: none;
+        }
+
+        .eval-case.correct {
+            color: var(--success);
+        }
+
+        .eval-case.incorrect {
+            color: var(--error);
+        }
+
         /* ============================================
            MOBILE RESPONSIVE STYLES
            ============================================ */
@@ -995,21 +1154,36 @@
             </div>
         </div>
 
-        <!-- API Key Section -->
+        <!-- Engine & API Section -->
         <div class="panel">
             <div class="panel-title">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
-                    <path d="M12 6v6l4 2"/>
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
                 </svg>
-                AI Enhancement (Optional)
+                Processing Engine
+            </div>
+
+            <div class="engine-selector">
+                <button class="engine-btn active" data-engine="rules" onclick="setEngine('rules')">
+                    <span class="engine-icon">⚡</span>
+                    <span>Rules</span>
+                </button>
+                <button class="engine-btn" data-engine="hybrid" onclick="setEngine('hybrid')">
+                    <span class="engine-icon">🔀</span>
+                    <span>Hybrid</span>
+                </button>
+                <button class="engine-btn" data-engine="openai" onclick="setEngine('openai')">
+                    <span class="engine-icon">🤖</span>
+                    <span>OpenAI</span>
+                </button>
             </div>
 
             <div class="api-section">
-                <div class="api-input-group">
+                <div class="api-input-group" id="openai-config" style="display: none;">
                     <label for="api-key">OpenAI API Key</label>
                     <input type="password" id="api-key" placeholder="sk-...">
-                    <div class="api-note">Optional: Enables AI-generated explanations. Key is never stored.</div>
+                    <div class="api-note">Required for OpenAI/Hybrid modes. Key is never stored.</div>
                 </div>
                 <button class="generate-btn" id="generate-btn" disabled onclick="generateEntries()">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1017,6 +1191,17 @@
                     </svg>
                     Generate Journal Entries
                 </button>
+            </div>
+
+            <div class="eval-section">
+                <button class="eval-btn" onclick="runEvalSuite()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 12l2 2 4-4"/>
+                        <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    Run Eval Suite
+                </button>
+                <span style="color: var(--text-muted); font-size: 0.8rem;">Test entry generation accuracy</span>
             </div>
         </div>
 
@@ -1267,6 +1452,422 @@
 
         let transactions = [];
         let generatedEntries = [];
+        let currentEngine = 'rules';
+
+        // ============================================
+        // EVAL TEST DATA - Ground Truth
+        // ============================================
+        const EVAL_TEST_DATA = [
+            {
+                input: { date: '2024-01-02', description: 'Client payment - ABC Corp Invoice', amount: 5000, type: 'receipt' },
+                expected: { debitAccount: 'Cash', creditAccount: 'Accounts Receivable', type: 'receipt' }
+            },
+            {
+                input: { date: '2024-01-05', description: 'Monthly rent payment', amount: -3500, type: 'expense' },
+                expected: { debitAccount: 'Operating Expenses', creditAccount: 'Cash', type: 'expense' }
+            },
+            {
+                input: { date: '2024-01-10', description: 'Employee payroll - January W1', amount: -12500, type: 'payroll' },
+                expected: { debitAccount: 'Salaries & Wages Expense', creditAccount: 'Cash', type: 'payroll' }
+            },
+            {
+                input: { date: '2024-01-03', description: 'Prepaid insurance - Annual policy', amount: -12000, type: 'prepaid' },
+                expected: { debitAccount: 'Prepaid Expenses', creditAccount: 'Cash', type: 'prepaid' }
+            },
+            {
+                input: { date: '2024-01-05', description: 'Equipment purchase - Computer servers', amount: -25000, type: 'asset' },
+                expected: { debitAccount: 'Fixed Assets - Equipment', creditAccount: 'Cash', type: 'asset' }
+            },
+            {
+                input: { date: '2024-01-07', description: 'Deferred revenue - Annual contract upfront', amount: 48000, type: 'deferred' },
+                expected: { debitAccount: 'Cash', creditAccount: 'Deferred Revenue', type: 'deferred' }
+            },
+            {
+                input: { date: '2024-01-12', description: 'Inventory purchase - Raw materials', amount: -18000, type: 'inventory' },
+                expected: { debitAccount: 'Inventory', creditAccount: 'Cash', type: 'inventory' }
+            },
+            {
+                input: { date: '2024-01-19', description: 'Depreciation - Monthly equipment', amount: -1250, type: 'depreciation' },
+                expected: { debitAccount: 'Depreciation Expense', creditAccount: 'Accumulated Depreciation', type: 'depreciation' }
+            },
+            {
+                input: { date: '2024-01-22', description: 'Cost of goods sold - Batch #45', amount: -7200, type: 'cogs' },
+                expected: { debitAccount: 'Cost of Goods Sold', creditAccount: 'Inventory', type: 'cogs' }
+            },
+            {
+                input: { date: '2024-01-25', description: 'Loan payment - Principal portion', amount: -5000, type: 'loan_principal' },
+                expected: { debitAccount: 'Notes Payable', creditAccount: 'Cash', type: 'loan_principal' }
+            },
+            {
+                input: { date: '2024-01-27', description: 'Revenue recognition - Deferred', amount: 4000, type: 'recognition' },
+                expected: { debitAccount: 'Deferred Revenue', creditAccount: 'Service Revenue', type: 'recognition' }
+            },
+            {
+                input: { date: '2024-01-31', description: 'Dividend declaration', amount: -10000, type: 'dividend' },
+                expected: { debitAccount: 'Retained Earnings', creditAccount: 'Dividends Payable', type: 'dividend' }
+            }
+        ];
+
+        // ============================================
+        // ENGINE SWITCHING
+        // ============================================
+
+        function setEngine(engine) {
+            currentEngine = engine;
+
+            // Update button states
+            document.querySelectorAll('.engine-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.engine === engine);
+            });
+
+            // Show/hide OpenAI config
+            const openaiConfig = document.getElementById('openai-config');
+            openaiConfig.style.display = (engine === 'openai' || engine === 'hybrid') ? 'block' : 'none';
+        }
+
+        // ============================================
+        // LLM-BASED ENTRY GENERATION
+        // ============================================
+
+        async function generateEntryWithOpenAI(transaction, apiKey) {
+            const accountList = `
+Available Accounts:
+- Cash (Asset)
+- Accounts Receivable (Asset)
+- Inventory (Asset)
+- Prepaid Expenses (Asset)
+- Fixed Assets - Equipment (Asset)
+- Accumulated Depreciation (Contra-Asset)
+- Allowance for Doubtful Accounts (Contra-Asset)
+- Accounts Payable (Liability)
+- Accrued Expenses (Liability)
+- Deferred Revenue (Liability)
+- Notes Payable (Liability)
+- Payroll Taxes Payable (Liability)
+- Dividends Payable (Liability)
+- Retained Earnings (Equity)
+- Revenue / Service Revenue (Revenue)
+- Operating Expenses (Expense)
+- Salaries & Wages Expense (Expense)
+- Depreciation Expense (Expense)
+- Interest Expense (Expense)
+- Bad Debt Expense (Expense)
+- Cost of Goods Sold (Expense)
+- Insurance Expense (Expense)
+- Utilities Expense (Expense)
+- Payroll Tax Expense (Expense)`;
+
+            try {
+                const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${apiKey}`
+                    },
+                    body: JSON.stringify({
+                        model: 'gpt-4o-mini',
+                        messages: [{
+                            role: 'system',
+                            content: `You are an expert accountant generating double-entry journal entries. For each transaction, determine:
+1. The debit account and its type
+2. The credit account and its type
+3. A brief explanation of why these accounts were chosen
+4. Confidence level (high/medium/low)
+
+${accountList}
+
+Rules:
+- Debits increase assets and expenses
+- Credits increase liabilities, equity, and revenue
+- Every entry must balance (debit = credit)
+- For payments/receipts, Cash is typically involved
+
+Respond with ONLY a JSON object:
+{
+  "debitAccount": "Account Name",
+  "debitType": "Asset|Liability|Equity|Revenue|Expense|Contra-Asset",
+  "creditAccount": "Account Name",
+  "creditType": "Asset|Liability|Equity|Revenue|Expense|Contra-Asset",
+  "explanation": "Brief explanation",
+  "confidence": "high|medium|low",
+  "transactionType": "receipt|expense|payroll|prepaid|asset|deferred|inventory|depreciation|cogs|loan_principal|loan_interest|recognition|amortization|writeoff|allowance|accrual|dividend"
+}`
+                        }, {
+                            role: 'user',
+                            content: `Generate a journal entry for:
+Date: ${transaction.date}
+Description: ${transaction.description}
+Amount: $${Math.abs(transaction.amount).toLocaleString()} (${transaction.amount >= 0 ? 'receipt/increase' : 'payment/decrease'})`
+                        }],
+                        temperature: 0.1,
+                        max_tokens: 300
+                    })
+                });
+
+                const data = await response.json();
+                const content = data.choices[0].message.content.trim();
+
+                const jsonMatch = content.match(/\{[\s\S]*\}/);
+                if (jsonMatch) {
+                    return JSON.parse(jsonMatch[0]);
+                }
+                return null;
+            } catch (error) {
+                console.error('OpenAI entry generation failed:', error);
+                return null;
+            }
+        }
+
+        async function generateEntriesWithLLM(txns, apiKey) {
+            const entries = [];
+
+            for (let i = 0; i < txns.length; i++) {
+                const t = txns[i];
+                const result = await generateEntryWithOpenAI(t, apiKey);
+
+                if (result) {
+                    entries.push({
+                        id: i + 1,
+                        date: t.date,
+                        description: t.description,
+                        type: result.transactionType || t.type || 'expense',
+                        amount: Math.abs(t.amount),
+                        debitAccount: result.debitAccount,
+                        debitType: result.debitType,
+                        creditAccount: result.creditAccount,
+                        creditType: result.creditType,
+                        explanation: result.explanation,
+                        confidence: result.confidence,
+                        source: 'OpenAI'
+                    });
+                } else {
+                    // Fallback to rules
+                    const type = t.type || inferType(t);
+                    const rule = entryRules[type] || entryRules.expense;
+                    entries.push({
+                        id: i + 1,
+                        date: t.date,
+                        description: t.description,
+                        type: type,
+                        amount: Math.abs(t.amount),
+                        debitAccount: rule.debit.account,
+                        debitType: rule.debit.type,
+                        creditAccount: rule.credit.account,
+                        creditType: rule.credit.type,
+                        explanation: rule.explanation,
+                        confidence: rule.confidence,
+                        source: 'Rules (LLM fallback)'
+                    });
+                }
+            }
+
+            return entries;
+        }
+
+        async function generateEntriesHybrid(txns, apiKey) {
+            const entries = [];
+
+            for (let i = 0; i < txns.length; i++) {
+                const t = txns[i];
+                const type = t.type || inferType(t);
+                const rule = entryRules[type];
+
+                // Use rules for high-confidence standard transactions
+                if (rule && rule.confidence === 'high') {
+                    entries.push({
+                        id: i + 1,
+                        date: t.date,
+                        description: t.description,
+                        type: type,
+                        amount: Math.abs(t.amount),
+                        debitAccount: rule.debit.account,
+                        debitType: rule.debit.type,
+                        creditAccount: rule.credit.account,
+                        creditType: rule.credit.type,
+                        explanation: rule.explanation,
+                        confidence: rule.confidence,
+                        source: 'Rules'
+                    });
+                } else if (apiKey) {
+                    // Use LLM for ambiguous transactions
+                    const result = await generateEntryWithOpenAI(t, apiKey);
+                    if (result) {
+                        entries.push({
+                            id: i + 1,
+                            date: t.date,
+                            description: t.description,
+                            type: result.transactionType || type,
+                            amount: Math.abs(t.amount),
+                            debitAccount: result.debitAccount,
+                            debitType: result.debitType,
+                            creditAccount: result.creditAccount,
+                            creditType: result.creditType,
+                            explanation: result.explanation,
+                            confidence: result.confidence,
+                            source: 'OpenAI (LLM assist)'
+                        });
+                    } else {
+                        // Final fallback
+                        const fallbackRule = entryRules.expense;
+                        entries.push({
+                            id: i + 1,
+                            date: t.date,
+                            description: t.description,
+                            type: type,
+                            amount: Math.abs(t.amount),
+                            debitAccount: fallbackRule.debit.account,
+                            debitType: fallbackRule.debit.type,
+                            creditAccount: fallbackRule.credit.account,
+                            creditType: fallbackRule.credit.type,
+                            explanation: fallbackRule.explanation,
+                            confidence: 'low',
+                            source: 'Rules (fallback)'
+                        });
+                    }
+                } else {
+                    // No API key, use default rule
+                    const fallbackRule = rule || entryRules.expense;
+                    entries.push({
+                        id: i + 1,
+                        date: t.date,
+                        description: t.description,
+                        type: type,
+                        amount: Math.abs(t.amount),
+                        debitAccount: fallbackRule.debit.account,
+                        debitType: fallbackRule.debit.type,
+                        creditAccount: fallbackRule.credit.account,
+                        creditType: fallbackRule.credit.type,
+                        explanation: fallbackRule.explanation,
+                        confidence: fallbackRule.confidence || 'medium',
+                        source: 'Rules'
+                    });
+                }
+            }
+
+            return entries;
+        }
+
+        // ============================================
+        // EVAL SUITE
+        // ============================================
+
+        async function runEvalSuite() {
+            const evalBtn = document.querySelector('.eval-btn');
+            evalBtn.disabled = true;
+            evalBtn.innerHTML = '<span class="spinner" style="width:14px;height:14px;border-width:2px;display:inline-block;"></span> Running...';
+
+            const results = [];
+            const apiKey = document.getElementById('api-key').value.trim();
+
+            for (const testCase of EVAL_TEST_DATA) {
+                let entry;
+
+                if (currentEngine === 'openai' && apiKey) {
+                    const llmResult = await generateEntryWithOpenAI(testCase.input, apiKey);
+                    if (llmResult) {
+                        entry = {
+                            debitAccount: llmResult.debitAccount,
+                            creditAccount: llmResult.creditAccount,
+                            type: llmResult.transactionType
+                        };
+                    }
+                }
+
+                if (!entry) {
+                    // Rules-based
+                    const type = testCase.input.type || inferType(testCase.input);
+                    const rule = entryRules[type] || entryRules.expense;
+                    entry = {
+                        debitAccount: rule.debit.account,
+                        creditAccount: rule.credit.account,
+                        type: type
+                    };
+                }
+
+                const debitMatch = entry.debitAccount === testCase.expected.debitAccount;
+                const creditMatch = entry.creditAccount === testCase.expected.creditAccount;
+                const typeMatch = entry.type === testCase.expected.type;
+
+                results.push({
+                    input: testCase.input,
+                    expected: testCase.expected,
+                    actual: entry,
+                    correct: debitMatch && creditMatch,
+                    debitMatch,
+                    creditMatch,
+                    typeMatch
+                });
+            }
+
+            // Calculate metrics
+            const correctCount = results.filter(r => r.correct).length;
+            const accuracy = Math.round((correctCount / results.length) * 100);
+            const debitAccuracy = Math.round((results.filter(r => r.debitMatch).length / results.length) * 100);
+            const creditAccuracy = Math.round((results.filter(r => r.creditMatch).length / results.length) * 100);
+            const typeAccuracy = Math.round((results.filter(r => r.typeMatch).length / results.length) * 100);
+
+            renderEvalResults({
+                accuracy,
+                debitAccuracy,
+                creditAccuracy,
+                typeAccuracy,
+                correctCount,
+                totalCount: results.length,
+                details: results,
+                engine: currentEngine
+            });
+
+            evalBtn.disabled = false;
+            evalBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Run Eval Suite';
+        }
+
+        function renderEvalResults(evalData) {
+            const container = document.getElementById('results');
+
+            // Remove existing eval results
+            const existingEval = document.querySelector('.eval-results');
+            if (existingEval) existingEval.remove();
+
+            const accuracyClass = evalData.accuracy >= 90 ? 'good' : evalData.accuracy >= 70 ? 'medium' : 'poor';
+
+            const evalHtml = `
+                <div class="eval-results">
+                    <div class="eval-header">
+                        <span class="eval-title">Eval Results (${evalData.engine.toUpperCase()} Engine)</span>
+                        <span class="eval-accuracy ${accuracyClass}">${evalData.accuracy}%</span>
+                    </div>
+                    <div class="eval-stats">
+                        <div class="eval-stat">
+                            <div class="eval-stat-value">${evalData.correctCount}/${evalData.totalCount}</div>
+                            <div class="eval-stat-label">Correct Entries</div>
+                        </div>
+                        <div class="eval-stat">
+                            <div class="eval-stat-value">${evalData.debitAccuracy}%</div>
+                            <div class="eval-stat-label">Debit Accuracy</div>
+                        </div>
+                        <div class="eval-stat">
+                            <div class="eval-stat-value">${evalData.creditAccuracy}%</div>
+                            <div class="eval-stat-label">Credit Accuracy</div>
+                        </div>
+                        <div class="eval-stat">
+                            <div class="eval-stat-value">${evalData.typeAccuracy}%</div>
+                            <div class="eval-stat-label">Type Detection</div>
+                        </div>
+                    </div>
+                    <div class="eval-details">
+                        ${evalData.details.map(d => `
+                            <div class="eval-case ${d.correct ? 'correct' : 'incorrect'}">
+                                <span>${d.input.description.substring(0, 35)}${d.input.description.length > 35 ? '...' : ''}</span>
+                                <span>${d.correct ? '✓ Correct' : '✗ ' + (d.debitMatch ? 'Credit wrong' : 'Debit wrong')}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            container.insertAdjacentHTML('beforeend', evalHtml);
+            container.classList.add('visible');
+        }
 
         // ============================================
         // FILE UPLOAD
@@ -1393,37 +1994,55 @@
         async function generateEntries() {
             const loading = document.getElementById('loading');
             const results = document.getElementById('results');
+            const apiKey = document.getElementById('api-key').value.trim();
+
+            // Validate API key for OpenAI mode
+            if (currentEngine === 'openai' && !apiKey) {
+                alert('Please enter an OpenAI API key for OpenAI engine');
+                return;
+            }
 
             loading.classList.add('visible');
             results.classList.remove('visible');
 
-            // Simulate processing time
-            await new Promise(resolve => setTimeout(resolve, 1500));
+            try {
+                if (currentEngine === 'openai') {
+                    generatedEntries = await generateEntriesWithLLM(transactions, apiKey);
+                } else if (currentEngine === 'hybrid') {
+                    generatedEntries = await generateEntriesHybrid(transactions, apiKey);
+                } else {
+                    // Rules-based
+                    await new Promise(resolve => setTimeout(resolve, 500)); // Brief delay for UX
+                    generatedEntries = transactions.map((t, index) => {
+                        const type = t.type || inferType(t);
+                        const rule = entryRules[type] || entryRules.expense;
+                        const amount = Math.abs(t.amount);
 
-            generatedEntries = transactions.map((t, index) => {
-                const type = t.type || inferType(t);
-                const rule = entryRules[type] || entryRules.expense;
-                const amount = Math.abs(t.amount);
+                        return {
+                            id: index + 1,
+                            date: t.date,
+                            description: t.description,
+                            type: type,
+                            amount: amount,
+                            debitAccount: rule.debit.account,
+                            debitType: rule.debit.type,
+                            creditAccount: rule.credit.account,
+                            creditType: rule.credit.type,
+                            explanation: rule.explanation,
+                            confidence: rule.confidence,
+                            source: 'Rules'
+                        };
+                    });
+                }
 
-                return {
-                    id: index + 1,
-                    date: t.date,
-                    description: t.description,
-                    type: type,
-                    amount: amount,
-                    debitAccount: rule.debit.account,
-                    debitType: rule.debit.type,
-                    creditAccount: rule.credit.account,
-                    creditType: rule.credit.type,
-                    explanation: rule.explanation,
-                    confidence: rule.confidence,
-                    source: 'CSV Import'
-                };
-            });
-
-            loading.classList.remove('visible');
-            renderResults();
-            results.classList.add('visible');
+                loading.classList.remove('visible');
+                renderResults();
+                results.classList.add('visible');
+            } catch (error) {
+                console.error('Entry generation error:', error);
+                loading.classList.remove('visible');
+                alert('Error generating entries: ' + error.message);
+            }
         }
 
         function inferType(transaction) {

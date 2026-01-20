@@ -415,6 +415,253 @@
             color: var(--info);
         }
 
+        /* Engine Selector */
+        .engine-selector {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .engine-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .engine-btn:hover {
+            border-color: var(--basis-teal-light);
+            color: var(--text-primary);
+        }
+
+        .engine-btn.active {
+            background: var(--basis-teal-dark);
+            border-color: var(--basis-teal);
+            color: var(--text-primary);
+        }
+
+        .engine-icon {
+            font-size: 1.1rem;
+        }
+
+        /* Ollama Config */
+        .ollama-config {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg-tertiary);
+            border-radius: 6px;
+        }
+
+        .ollama-config label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .model-select {
+            width: 100%;
+            padding: 0.6rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        .model-select:focus {
+            outline: none;
+            border-color: var(--basis-teal-light);
+        }
+
+        .ollama-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+            font-size: 0.8rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--warning);
+        }
+
+        .status-dot.connected {
+            background: var(--success);
+        }
+
+        .status-dot.disconnected {
+            background: #ef4444;
+        }
+
+        .status-text {
+            color: var(--text-muted);
+        }
+
+        /* OpenAI Config */
+        .openai-config {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg-tertiary);
+            border-radius: 6px;
+        }
+
+        .openai-config label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .api-key-input {
+            width: 100%;
+            padding: 0.6rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+        }
+
+        .api-key-input:focus {
+            outline: none;
+            border-color: var(--basis-teal-light);
+        }
+
+        /* Hybrid Config */
+        .hybrid-config {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg-tertiary);
+            border-radius: 6px;
+        }
+
+        .hybrid-config label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .hybrid-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* Eval Section */
+        .eval-section {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .eval-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background: var(--bg-tertiary);
+            border: 1px dashed var(--border-color);
+        }
+
+        .eval-btn:hover {
+            border-style: solid;
+            border-color: var(--basis-teal-light);
+        }
+
+        /* Eval Results */
+        .eval-results {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg-tertiary);
+            border-radius: 6px;
+        }
+
+        .eval-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .eval-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .eval-accuracy {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .eval-accuracy.good { color: var(--success); }
+        .eval-accuracy.medium { color: var(--warning); }
+        .eval-accuracy.bad { color: #ef4444; }
+
+        .eval-breakdown {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .eval-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            padding: 0.4rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .eval-row:last-child {
+            border-bottom: none;
+        }
+
+        .eval-category {
+            color: var(--text-secondary);
+        }
+
+        .eval-score {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-primary);
+        }
+
+        .eval-score.correct { color: var(--success); }
+        .eval-score.incorrect { color: #ef4444; }
+
+        .eval-meta {
+            margin-top: 1rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
         /* Export Button */
         .export-section {
             margin-top: 1.5rem;
@@ -648,9 +895,77 @@
                     </div>
 
                     <div class="config-section">
-                        <label for="openai-key">OpenAI API Key (optional)</label>
-                        <input type="password" id="openai-key" placeholder="sk-...">
-                        <p class="hint">For ambiguous transactions, the agent can use GPT to classify. Leave empty to use rule-based only.</p>
+                        <label>Classification Engine</label>
+                        <div class="engine-selector">
+                            <button class="engine-btn active" data-engine="rules" onclick="setEngine('rules')">
+                                <span class="engine-icon">⚡</span>
+                                <span>Rules</span>
+                            </button>
+                            <button class="engine-btn" data-engine="hybrid" onclick="setEngine('hybrid')">
+                                <span class="engine-icon">🔀</span>
+                                <span>Hybrid</span>
+                            </button>
+                            <button class="engine-btn" data-engine="ollama" onclick="setEngine('ollama')">
+                                <span class="engine-icon">🦙</span>
+                                <span>Ollama</span>
+                            </button>
+                            <button class="engine-btn" data-engine="openai" onclick="setEngine('openai')">
+                                <span class="engine-icon">🤖</span>
+                                <span>OpenAI</span>
+                            </button>
+                        </div>
+
+                        <div class="ollama-config" id="ollama-config" style="display: none;">
+                            <label for="ollama-model">Model</label>
+                            <select id="ollama-model" class="model-select">
+                                <option value="llama3.2">Llama 3.2 (3B)</option>
+                                <option value="llama3.2:7b">Llama 3.2 (7B)</option>
+                                <option value="mistral">Mistral (7B)</option>
+                                <option value="phi3">Phi-3 (3.8B)</option>
+                            </select>
+                            <p class="hint">Requires Ollama running locally on port 11434</p>
+                            <div class="ollama-status" id="ollama-status">
+                                <span class="status-dot"></span>
+                                <span class="status-text">Checking connection...</span>
+                            </div>
+                        </div>
+
+                        <div class="openai-config" id="openai-config" style="display: none;">
+                            <label for="openai-key">API Key</label>
+                            <input type="password" id="openai-key" class="api-key-input" placeholder="sk-...">
+                            <label for="openai-model" style="margin-top: 0.75rem;">Model</label>
+                            <select id="openai-model" class="model-select">
+                                <option value="gpt-4o-mini">GPT-4o Mini (Fast)</option>
+                                <option value="gpt-4o">GPT-4o (Best)</option>
+                                <option value="gpt-3.5-turbo">GPT-3.5 Turbo (Legacy)</option>
+                            </select>
+                            <p class="hint">Works when deployed - no local setup needed</p>
+                        </div>
+
+                        <div class="hybrid-config" id="hybrid-config" style="display: none;">
+                            <p class="hybrid-desc">Rules first, then LLM for ambiguous transactions</p>
+                            <label for="hybrid-fallback">Fallback LLM</label>
+                            <select id="hybrid-fallback" class="model-select">
+                                <option value="openai">OpenAI</option>
+                                <option value="ollama">Ollama (Local)</option>
+                            </select>
+                            <div class="hybrid-openai-key" id="hybrid-openai-key">
+                                <label for="hybrid-api-key" style="margin-top: 0.75rem;">OpenAI API Key</label>
+                                <input type="password" id="hybrid-api-key" class="api-key-input" placeholder="sk-...">
+                            </div>
+                            <p class="hint">Only calls LLM for low-confidence classifications</p>
+                        </div>
+                    </div>
+
+                    <div class="eval-section">
+                        <button class="btn eval-btn" onclick="runEvalSuite()">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 12l2 2 4-4"/>
+                                <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            Run Eval Suite
+                        </button>
+                        <p class="hint">Test accuracy against labeled dataset</p>
                     </div>
                 </div>
             </div>
@@ -864,10 +1179,310 @@
         }
 
         // ===========================================
-        // LLM FALLBACK (OpenAI)
+        // ENGINE STATE
+        // ===========================================
+        let currentEngine = 'rules';
+        let ollamaConnected = false;
+
+        function setEngine(engine) {
+            currentEngine = engine;
+
+            // Update UI
+            document.querySelectorAll('.engine-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.engine === engine);
+            });
+
+            // Show/hide config panels
+            document.getElementById('ollama-config').style.display = engine === 'ollama' ? 'block' : 'none';
+            document.getElementById('openai-config').style.display = engine === 'openai' ? 'block' : 'none';
+            document.getElementById('hybrid-config').style.display = engine === 'hybrid' ? 'block' : 'none';
+
+            // Check Ollama connection when selected
+            if (engine === 'ollama') {
+                checkOllamaConnection();
+            }
+
+            // Check Ollama for hybrid mode if selected
+            if (engine === 'hybrid') {
+                updateHybridFallbackUI();
+            }
+        }
+
+        function updateHybridFallbackUI() {
+            const fallback = document.getElementById('hybrid-fallback').value;
+            document.getElementById('hybrid-openai-key').style.display = fallback === 'openai' ? 'block' : 'none';
+
+            if (fallback === 'ollama') {
+                checkOllamaConnection();
+            }
+        }
+
+        // Hybrid fallback toggle listener
+        document.addEventListener('DOMContentLoaded', () => {
+            const hybridFallback = document.getElementById('hybrid-fallback');
+            if (hybridFallback) {
+                hybridFallback.addEventListener('change', updateHybridFallbackUI);
+            }
+        });
+
+        async function checkOllamaConnection() {
+            const statusDot = document.querySelector('.status-dot');
+            const statusText = document.querySelector('.status-text');
+
+            statusDot.className = 'status-dot';
+            statusText.textContent = 'Checking connection...';
+
+            try {
+                const response = await fetch('http://localhost:11434/api/tags');
+                if (response.ok) {
+                    const data = await response.json();
+                    ollamaConnected = true;
+                    statusDot.classList.add('connected');
+                    statusText.textContent = `Connected (${data.models?.length || 0} models available)`;
+                } else {
+                    throw new Error('Not connected');
+                }
+            } catch (error) {
+                ollamaConnected = false;
+                statusDot.classList.add('disconnected');
+                statusText.textContent = 'Not connected - run "ollama serve"';
+            }
+        }
+
+        // ===========================================
+        // OLLAMA CLASSIFICATION
         // ===========================================
 
-        async function classifyWithLLM(transaction, apiKey) {
+        async function classifyWithOllama(transaction) {
+            const model = document.getElementById('ollama-model').value;
+            const categories = Object.keys(CLASSIFICATION_RULES).join(', ');
+
+            const prompt = `You are a bookkeeping assistant classifying bank transactions for a small business.
+
+Available categories: ${categories}
+
+Classify this transaction:
+Description: ${transaction.description}
+Amount: ${transaction.amount}
+
+Respond with ONLY the category name from the list above, nothing else.`;
+
+            try {
+                const response = await fetch('http://localhost:11434/api/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        model: model,
+                        prompt: prompt,
+                        stream: false,
+                        options: {
+                            temperature: 0,
+                            num_predict: 50
+                        }
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Ollama request failed');
+                }
+
+                const data = await response.json();
+                let category = data.response.trim();
+
+                // Clean up the response - extract just the category name
+                category = category.split('\n')[0].trim();
+                category = category.replace(/^["']|["']$/g, '');
+
+                // Validate against known categories
+                const validCategories = Object.keys(CLASSIFICATION_RULES);
+                const matchedCategory = validCategories.find(c =>
+                    category.toLowerCase().includes(c.toLowerCase()) ||
+                    c.toLowerCase().includes(category.toLowerCase())
+                );
+
+                return {
+                    category: matchedCategory || category,
+                    confidence: matchedCategory ? 'high' : 'medium',
+                    method: 'llm'
+                };
+            } catch (error) {
+                console.error('Ollama classification failed:', error);
+                return {
+                    category: 'Uncategorized',
+                    confidence: 'low',
+                    method: 'error',
+                    needsReview: true
+                };
+            }
+        }
+
+        // ===========================================
+        // EVAL SUITE
+        // ===========================================
+
+        const EVAL_TEST_SET = [
+            { description: 'STRIPE TRANSFER 240102', amount: '4250.00', expected: 'Revenue' },
+            { description: 'GUSTO PAYROLL', amount: '-3200.00', expected: 'Payroll' },
+            { description: 'GUSTO PAYROLL TAX', amount: '-485.00', expected: 'Payroll Tax' },
+            { description: 'AMZN MKTP US*2K4X7', amount: '-89.99', expected: 'Office Supplies' },
+            { description: 'GOOGLE *WORKSPACE', amount: '-72.00', expected: 'Software - Productivity' },
+            { description: 'UBER TRIP 01/07', amount: '-34.50', expected: 'Travel - Transportation' },
+            { description: 'COMCAST BUSINESS', amount: '-199.00', expected: 'Utilities' },
+            { description: 'SLACK TECHNOLOGIES', amount: '-15.00', expected: 'Software - Productivity' },
+            { description: 'STAPLES DIRECT', amount: '-156.78', expected: 'Office Supplies' },
+            { description: 'ZOOM.US', amount: '-149.90', expected: 'Software - Productivity' },
+            { description: 'ADOBE *CREATIVE CLOUD', amount: '-59.99', expected: 'Software - Productivity' },
+            { description: 'DELTA AIR 0062341987', amount: '-387.00', expected: 'Travel - Transportation' },
+            { description: 'MARRIOTT CHICAGO', amount: '-289.00', expected: 'Travel - Lodging' },
+            { description: 'UBER EATS', amount: '-42.15', expected: 'Meals' },
+            { description: 'AWS SERVICES', amount: '-234.67', expected: 'Software - Development' },
+            { description: 'LINKEDIN PREMIUM', amount: '-59.99', expected: 'Software - Marketing' },
+            { description: 'PG&E ELECTRIC', amount: '-342.00', expected: 'Utilities' },
+            { description: 'QUICKBOOKS SUBSCRIPTION', amount: '-85.00', expected: 'Software - Accounting' },
+            { description: 'DOORDASH*ORDER', amount: '-28.43', expected: 'Meals' },
+            { description: 'FEDEX SHIPPING', amount: '-45.67', expected: 'Shipping' },
+            { description: 'HUBSPOT INC', amount: '-800.00', expected: 'Software - Marketing' },
+            { description: 'BANK SERVICE FEE', amount: '-25.00', expected: 'Bank Fees' },
+            { description: 'INTEREST EARNED', amount: '12.34', expected: 'Interest Income' },
+            { description: 'GITHUB INC', amount: '-21.00', expected: 'Software - Development' },
+            { description: 'STATE FARM INSURANCE', amount: '-450.00', expected: 'Insurance' },
+            { description: 'AIRBNB HMQK7N', amount: '-412.00', expected: 'Travel - Lodging' },
+            { description: 'CHECK DEP - INVOICE 1042', amount: '1500.00', expected: 'Revenue' },
+            { description: 'WIRE TRANSFER IN - CLIENT ABC', amount: '15000.00', expected: 'Revenue' },
+            { description: 'BUILDING RENT - JANUARY', amount: '-4500.00', expected: 'Rent' },
+            { description: 'UNKNOWN MERCHANT 847293', amount: '-67.50', expected: 'Uncategorized' },
+        ];
+
+        async function runEvalSuite() {
+            const evalBtn = document.querySelector('.eval-btn');
+            const originalText = evalBtn.innerHTML;
+            evalBtn.innerHTML = '<div class="spinner" style="width:14px;height:14px;"></div> Running eval...';
+            evalBtn.disabled = true;
+
+            const results = [];
+            const startTime = Date.now();
+
+            for (const testCase of EVAL_TEST_SET) {
+                let result;
+
+                if (currentEngine === 'hybrid') {
+                    // Try rules first
+                    result = classifyTransaction(testCase);
+
+                    // If uncategorized or low confidence, use LLM fallback
+                    if (result.needsReview || result.confidence === 'low') {
+                        const fallback = document.getElementById('hybrid-fallback').value;
+
+                        if (fallback === 'ollama' && ollamaConnected) {
+                            result = await classifyWithOllama(testCase);
+                            result.method = 'hybrid-ollama';
+                        } else if (fallback === 'openai') {
+                            const originalKey = document.getElementById('openai-key').value;
+                            document.getElementById('openai-key').value = document.getElementById('hybrid-api-key').value;
+                            result = await classifyWithOpenAI(testCase);
+                            document.getElementById('openai-key').value = originalKey;
+                            result.method = 'hybrid-openai';
+                        }
+                    } else {
+                        result.method = 'rules';
+                    }
+                } else if (currentEngine === 'ollama' && ollamaConnected) {
+                    result = await classifyWithOllama(testCase);
+                } else if (currentEngine === 'openai') {
+                    result = await classifyWithOpenAI(testCase);
+                } else {
+                    result = classifyTransaction(testCase);
+                }
+
+                results.push({
+                    ...testCase,
+                    predicted: result.category,
+                    correct: result.category === testCase.expected,
+                    method: result.method
+                });
+            }
+
+            const elapsed = ((Date.now() - startTime) / 1000).toFixed(2);
+            const correct = results.filter(r => r.correct).length;
+            const accuracy = ((correct / results.length) * 100).toFixed(1);
+
+            // Render eval results
+            renderEvalResults(results, accuracy, elapsed);
+
+            evalBtn.innerHTML = originalText;
+            evalBtn.disabled = false;
+        }
+
+        function renderEvalResults(results, accuracy, elapsed) {
+            const evalSection = document.querySelector('.eval-section');
+
+            // Remove existing results
+            const existingResults = evalSection.querySelector('.eval-results');
+            if (existingResults) existingResults.remove();
+
+            const accuracyClass = accuracy >= 80 ? 'good' : accuracy >= 60 ? 'medium' : 'bad';
+
+            // Group by category for breakdown
+            const byCategory = {};
+            results.forEach(r => {
+                if (!byCategory[r.expected]) {
+                    byCategory[r.expected] = { correct: 0, total: 0 };
+                }
+                byCategory[r.expected].total++;
+                if (r.correct) byCategory[r.expected].correct++;
+            });
+
+            const engineLabels = {
+                'rules': '⚡ Rules',
+                'hybrid': '🔀 Hybrid',
+                'ollama': '🦙 Ollama',
+                'openai': '🤖 OpenAI'
+            };
+
+            const html = `
+                <div class="eval-results">
+                    <div class="eval-header">
+                        <span class="eval-title">${engineLabels[currentEngine]} Eval</span>
+                        <span class="eval-accuracy ${accuracyClass}">${accuracy}%</span>
+                    </div>
+                    <div class="eval-breakdown">
+                        ${Object.entries(byCategory).map(([cat, data]) => `
+                            <div class="eval-row">
+                                <span class="eval-category">${cat}</span>
+                                <span class="eval-score ${data.correct === data.total ? 'correct' : ''}">${data.correct}/${data.total}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="eval-meta">
+                        <span>${results.length} test cases</span>
+                        <span>${elapsed}s</span>
+                    </div>
+                </div>
+            `;
+
+            evalSection.insertAdjacentHTML('beforeend', html);
+        }
+
+        // ===========================================
+        // OPENAI CLASSIFICATION
+        // ===========================================
+
+        async function classifyWithOpenAI(transaction) {
+            const apiKey = document.getElementById('openai-key').value.trim();
+            const model = document.getElementById('openai-model').value;
+
+            if (!apiKey) {
+                return {
+                    category: 'Uncategorized',
+                    confidence: 'low',
+                    method: 'error',
+                    needsReview: true,
+                    error: 'No API key'
+                };
+            }
+
             const categories = Object.keys(CLASSIFICATION_RULES).join(', ');
 
             try {
@@ -878,18 +1493,19 @@
                         'Authorization': `Bearer ${apiKey}`
                     },
                     body: JSON.stringify({
-                        model: 'gpt-3.5-turbo',
+                        model: model,
                         messages: [{
                             role: 'system',
-                            content: `You are an expert accountant. Classify bank transactions into accounting categories.
-                                     Available categories: ${categories}
-                                     Respond with ONLY the category name, nothing else.`
+                            content: `You are a bookkeeping assistant classifying bank transactions for a small business.
+
+Available categories: ${categories}
+
+Respond with ONLY the category name from the list above, nothing else.`
                         }, {
                             role: 'user',
                             content: `Classify this transaction:
-                                     Description: ${transaction.description}
-                                     Amount: ${transaction.amount}
-                                     Account: ${transaction.account || 'Unknown'}`
+Description: ${transaction.description}
+Amount: ${transaction.amount}`
                         }],
                         temperature: 0,
                         max_tokens: 50
@@ -897,15 +1513,27 @@
                 });
 
                 const data = await response.json();
-                const category = data.choices[0].message.content.trim();
+
+                if (data.error) {
+                    throw new Error(data.error.message);
+                }
+
+                let category = data.choices[0].message.content.trim();
+
+                // Validate against known categories
+                const validCategories = Object.keys(CLASSIFICATION_RULES);
+                const matchedCategory = validCategories.find(c =>
+                    category.toLowerCase() === c.toLowerCase() ||
+                    category.toLowerCase().includes(c.toLowerCase())
+                );
 
                 return {
-                    category: category,
-                    confidence: 'medium',
+                    category: matchedCategory || category,
+                    confidence: matchedCategory ? 'high' : 'medium',
                     method: 'llm'
                 };
             } catch (error) {
-                console.error('LLM classification failed:', error);
+                console.error('OpenAI classification failed:', error);
                 return {
                     category: 'Uncategorized',
                     confidence: 'low',
@@ -1039,7 +1667,7 @@
                         <td>
                             <div class="category-cell">
                                 <span class="category-badge">${c.category}</span>
-                                ${c.method === 'llm' ? '<span class="method-badge llm">AI</span>' : ''}
+                                ${c.method === 'llm' || c.method === 'hybrid-openai' || c.method === 'hybrid-ollama' ? '<span class="method-badge llm">AI</span>' : ''}
                             </div>
                         </td>
                         <td>
@@ -1129,16 +1757,43 @@
             showLoading();
 
             const transactions = parseCSV(csvText);
-            const apiKey = document.getElementById('openai-key').value.trim();
             const classifications = [];
 
-            for (const transaction of transactions) {
-                let result = classifyTransaction(transaction);
+            for (let i = 0; i < transactions.length; i++) {
+                const transaction = transactions[i];
+                let result;
 
-                // If uncategorized and we have an API key, try LLM
-                if (result.needsReview && apiKey) {
-                    showLoading(`Classifying with AI... (${classifications.length + 1}/${transactions.length})`);
-                    result = await classifyWithLLM(transaction, apiKey);
+                if (currentEngine === 'hybrid') {
+                    // Try rules first
+                    result = classifyTransaction(transaction);
+
+                    // If uncategorized or low confidence, use LLM fallback
+                    if (result.needsReview || result.confidence === 'low') {
+                        const fallback = document.getElementById('hybrid-fallback').value;
+                        showLoading(`Rules → LLM fallback (${i + 1}/${transactions.length})`);
+
+                        if (fallback === 'ollama' && ollamaConnected) {
+                            result = await classifyWithOllama(transaction);
+                            result.method = 'hybrid-ollama';
+                        } else if (fallback === 'openai') {
+                            // Use hybrid API key
+                            const originalKey = document.getElementById('openai-key').value;
+                            document.getElementById('openai-key').value = document.getElementById('hybrid-api-key').value;
+                            result = await classifyWithOpenAI(transaction);
+                            document.getElementById('openai-key').value = originalKey;
+                            result.method = 'hybrid-openai';
+                        }
+                    } else {
+                        result.method = 'rules';
+                    }
+                } else if (currentEngine === 'ollama' && ollamaConnected) {
+                    showLoading(`Classifying with Ollama... (${i + 1}/${transactions.length})`);
+                    result = await classifyWithOllama(transaction);
+                } else if (currentEngine === 'openai') {
+                    showLoading(`Classifying with OpenAI... (${i + 1}/${transactions.length})`);
+                    result = await classifyWithOpenAI(transaction);
+                } else {
+                    result = classifyTransaction(transaction);
                 }
 
                 classifications.push(result);
