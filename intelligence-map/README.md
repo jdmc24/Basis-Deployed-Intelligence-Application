@@ -2,7 +2,7 @@
 
 An interactive dashboard identifying CPA firms that would be ideal customers for [Basis](https://www.getbasis.ai/), an AI platform for accounting firms.
 
-**[View Live Demo](https://jdmc24.github.io/Basis-Deployed-Intelligence-Application/)**
+**[View Live Demo](https://jdmc24.github.io/Basis-Deployed-Intelligence-Application/intelligence-map/)**
 
 ---
 

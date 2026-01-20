@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.getbasis.ai)",
+      "WebFetch(domain:openai.com)",
+      "WebSearch",
+      "Bash(open:*)",
+      "WebFetch(domain:www.accountingtoday.com)",
+      "WebFetch(domain:businessbeyondborders.podbean.com)",
+      "WebFetch(domain:cpatrendlines.com)",
+      "WebFetch(domain:jdmc24.github.io)",
+      "WebFetch(domain:github.com)",
+      "Bash(curl:*)",
+      "WebFetch(domain:raw.githubusercontent.com)"
+    ]
+  }
+}
